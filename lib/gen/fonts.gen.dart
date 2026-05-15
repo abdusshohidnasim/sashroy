@@ -1,0 +1,28 @@
+// dart format width=80
+/// GENERATED CODE - DO NOT MODIFY BY HAND
+/// *****************************************************
+///  FlutterGen
+/// *****************************************************
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
+
+class FontFamily {
+  FontFamily._();
+
+  /// Font family: Digital-Numbers
+  static const String digitalNumbers = 'Digital-Numbers';
+
+  /// Font family: General-Sans-Medium
+  static const String generalSansMedium = 'General-Sans-Medium';
+
+  /// Font family: General-Sans-Regular
+  static const String generalSansRegular = 'General-Sans-Regular';
+
+  /// Font family: General-Sans-Semibold
+  static const String generalSansSemibold = 'General-Sans-Semibold';
+
+  /// Font family: Poppins
+  static const String poppins = 'Poppins';
+}
