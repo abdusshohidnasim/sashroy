@@ -11,7 +11,7 @@ Widget loadingIndicatorCircle({
   double? size,
 }) {
   double loaderSize = 200.sp;
-  return DotLottieLoader.fromAsset(Assets.lottie.waiting,
+  return DotLottieLoader.fromAsset(Assets.icons.logout.path,
       frameBuilder: (BuildContext ctx, DotLottie? dotlottie) {
     if (dotlottie != null) {
       return Center(
@@ -34,7 +34,7 @@ Widget shimmer({
 }) {
   return Center(
     child: Container(
-      child: Lottie.asset(name ?? Assets.lottie.hamburger,
+      child: Lottie.asset(name ?? Assets.icons.logout.path,
           width: size, height: size),
     ),
   );

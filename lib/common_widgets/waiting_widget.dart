@@ -15,7 +15,7 @@ class WaitingWidget extends StatelessWidget {
     return Center(
         child: shimmer(
             context: NavigationService.context,
-            name: Assets.lottie.waiting,
+            name: Assets.icons.logout.path,
             size: 220.sp));
   }
 }

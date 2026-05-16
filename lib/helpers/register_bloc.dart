@@ -1,10 +1,12 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../features/auth/presentation/login/bloc/login_bloc.dart';
+
 List<BlocProvider> appBlocProviders = [
-  // BlocProvider<AuthBloc>(
-  //   create: (_) => AuthBloc(),
-  // ),
+  BlocProvider<LoginBloc>(
+    create: (_) => LoginBloc(),
+  ),
   // BlocProvider<ProductBloc>(
   //   create: (_) => ProductBloc(),
   // ),

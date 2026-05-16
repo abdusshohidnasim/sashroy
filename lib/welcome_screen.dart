@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'common_widgets/loading_indicators.dart';
 import 'gen/assets.gen.dart';
-import 'gen/colors.gen.dart';
+
 
 final class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -21,20 +20,14 @@ final class WelcomeScreen extends StatelessWidget {
                 height: 40.h,
               ),
               Image.asset(
-                Assets.images.placeholderImage.path,
+                Assets.images.sashroy.path,
                 height: 100.h,
                 width: 100.w,
               ),
               SizedBox(
                 height: 10.h,
               ),
-              SizedBox(
-                child: shimmer(
-                    context: context,
-                    name: Assets.lottie.loadingSpinner,
-                    size: 150.sp,
-                    color: AppColors.c000000),
-              )
+             
             ]),
       ),
     );
