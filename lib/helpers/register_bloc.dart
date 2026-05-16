@@ -1,3 +1,21 @@
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+List<BlocProvider> appBlocProviders = [
+  // BlocProvider<AuthBloc>(
+  //   create: (_) => AuthBloc(),
+  // ),
+  // BlocProvider<ProductBloc>(
+  //   create: (_) => ProductBloc(),
+  // ),
+  // নতুন bloc এখানে add করবেন
+];
+
+
+
+
+
+
 // import 'package:provider/provider.dart';
 // import '../provider/internet_connection_provider.dart';
 

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:auto_animated/auto_animated.dart';
-
 import 'gen/colors.gen.dart';
-import 'helpers/app_router.dart';
+import 'helpers/all_routes.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
+import 'helpers/register_bloc.dart';
 import 'networks/dio/dio.dart';
 
 void main() async {
@@ -15,8 +16,8 @@ void main() async {
   await GetStorage.init();
   diSetup();
   // initiInternetChecker();
- // await LocationService.instance.initialize();
-DioSingleton.instance.create();
+  // await LocationService.instance.initialize();
+  DioSingleton.instance.create();
   runApp(const MyApp());
 }
 
@@ -26,17 +27,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     rotation();
-    return AnimateIfVisibleWrapper(
-      showItemInterval: const Duration(milliseconds: 150),
-      child: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (bool didPop,_) async {
-          showMaterialDialog(context);
-        },
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return const UtillScreenMobile();
+    return MultiBlocProvider(
+      providers: appBlocProviders,
+      child: AnimateIfVisibleWrapper(
+        showItemInterval: const Duration(milliseconds: 150),
+        child: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, _) async {
+            showMaterialDialog(context);
           },
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return const UtillScreenMobile();
+            },
+          ),
         ),
       ),
     );
@@ -63,8 +67,6 @@ class UtillScreenMobile extends StatelessWidget {
           child: MaterialApp.router(
               theme: ThemeData(
                   unselectedWidgetColor: Colors.white,
-                 
-                  useMaterial3: false,
                   scaffoldBackgroundColor: AppColors.cFFFFFF,
                   appBarTheme: const AppBarTheme(
                       backgroundColor: AppColors.cFFFFFF, elevation: 0)),
