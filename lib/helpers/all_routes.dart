@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../common_widgets/not_found_widget.dart';
-import '../features/auth/presentation/login.dart';
-import '../features/auth/presentation/signup.dart';
+import '../features/auth/presentation/login/login_screen.dart';
+
 import '../features/user_profile/presentation/profile.dart';
 import '../loading_screen.dart';
 import 'navigation_service.dart';
@@ -59,14 +59,14 @@ final class AppRouter {
           child: const LoginScreen(),
         ),
       ),
-      GoRoute(
-        path: Routes.signUpScreen,
-        name: 'signUp',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: const SignUpScreen(),
-        ),
-      ),
+      // GoRoute(
+      //   path: Routes.signUpScreen,
+      //   name: 'signUp',
+      //   pageBuilder: (context, state) => _platformPage(
+      //     state: state,
+      //     child: const SignUpScreen(),
+      //   ),
+      // ),
       GoRoute(
         path: Routes.profile,
         name: 'profile',

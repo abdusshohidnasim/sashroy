@@ -25,11 +25,11 @@ class TextFontStyle {
 
 
 // General-Sans-Semibold
-static final textStyle32C1A1A1ADGSS600 = TextStyle(
+static final textStyle28C1A1A1ADGSS600 = TextStyle(
   fontFamily: "General-Sans-Semibold",
   color: AppColors.c1A1A1A,
-  fontSize: 32.sp,
-  fontWeight: FontWeight.w600,
+  fontSize: 28.sp,
+  fontWeight: FontWeight.w800,
 );
 static final textStyle24C1A1A1ADGSS600 = TextStyle(
   fontFamily: "General-Sans-Semibold",

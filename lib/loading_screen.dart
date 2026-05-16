@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'constants/app_constants.dart';
-import 'features/auth/presentation/login.dart';
+import 'features/auth/presentation/login/login_screen.dart';
 
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';

@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:auto_animated/auto_animated.dart';
+import 'package:sashroy/helpers/register_bloc.dart';
 import 'gen/colors.gen.dart';
 import 'helpers/all_routes.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
-import 'helpers/register_bloc.dart';
 import 'networks/dio/dio.dart';
 
 void main() async {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     rotation();
     return MultiBlocProvider(
-      providers: appBlocProviders,
+      providers: appBlocProviders, 
       child: AnimateIfVisibleWrapper(
         showItemInterval: const Duration(milliseconds: 150),
         child: PopScope(
