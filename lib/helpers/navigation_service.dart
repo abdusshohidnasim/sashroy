@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 final class NavigationService {
   static final NavigationService _navigationService =
@@ -9,65 +8,43 @@ final class NavigationService {
 
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  static BuildContext get _context => navigatorKey.currentContext!;
-  static GoRouter get _router => GoRouter.of(_context);
+  static Future<dynamic> navigateTo(String routeName) =>
+      navigatorKey.currentState!.pushNamed(routeName);
 
-  static Future<dynamic> navigateTo(String routeName) => _router.push(routeName);
-
-    static Future<dynamic> navigateToReplacement(String routeName) =>
-      _router.pushReplacement(routeName);
+  static Future<dynamic> navigateToReplacement(String routeName, {Object? arguments}) =>
+      navigatorKey.currentState!.pushReplacementNamed(routeName, arguments: arguments);
 
   static Future<dynamic> popAndReplace(String routeName) async {
-    if (_router.canPop()) {
-      _router.pop();
-    }
-    return await _router.push(routeName);
+    return await navigatorKey.currentState!.popAndPushNamed(routeName);
   }
 
-  static Future<dynamic> navigateToUntilReplacement(String routeName) async {
-    _router.go(routeName);
-    return null;
-  }
+  static Future<dynamic> navigateToUntilReplacement(String routeName) =>
+      navigatorKey.currentState!
+          .pushNamedAndRemoveUntil(routeName, (route) => false);
 
   static Future<dynamic> navigateToWithArgs(
     String routeName,
     Map<String, dynamic>? map,
   ) =>
-      _router.push(routeName, extra: map);
+      navigatorKey.currentState!.pushNamed(routeName, arguments: map);
 
   static Future<dynamic> popAndReplaceWihArgs(
           String routeName, Map<String, dynamic>? map) =>
-      popAndReplaceWithObject(routeName, map);
+      navigatorKey.currentState!.popAndPushNamed(routeName, arguments: map);
 
   static Future<dynamic> navigateToWithObject(
     String routeName,
     Object? obj,
   ) =>
-      _router.push(routeName, extra: obj);
+      navigatorKey.currentState!.pushNamed(routeName, arguments: obj);
 
-  static Future<dynamic> popAndReplaceWithObject(
-    String routeName,
-    Object? obj,
-  ) async {
-    if (_router.canPop()) {
-      _router.pop();
-    }
-    return await _router.push(routeName, extra: obj);
-  }
+  static get goBack => navigatorKey.currentState!.pop();
 
-  static get goBack {
-    if (_router.canPop()) {
-      _router.pop();
-    }
-  }
-
-  static get goBeBack => _router.canPop();
+  static get goBeBack => navigatorKey.currentState!.canPop();
 
   static get context => navigatorKey.currentContext;
 
   static void goBackCall() {
-    if (_router.canPop()) {
-      _router.pop();
-    }
+    navigatorKey.currentState?.pop();
   }
 }

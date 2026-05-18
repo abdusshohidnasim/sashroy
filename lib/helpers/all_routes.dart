@@ -1,197 +1,131 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:sashroy/features/auth/presentation/signup/signup_screen.dart';
 
-import '../common_widgets/not_found_widget.dart';
 import '../features/auth/presentation/login/login_screen.dart';
 
-import '../features/user_profile/presentation/profile.dart';
-import '../loading_screen.dart';
-import 'navigation_service.dart';
-
-
-
-
 final class Routes {
-  Routes._();
-
-  static const String root = '/';
-
-  // Auth Routes
+  static final Routes _routes = Routes._internal();
+  Routes._internal();
+  static Routes get instance => _routes;
   static const String loginScreen = '/logIn';
   static const String signUpScreen = '/signUp';
-  static const String forgotPWScreen = '/ForgotPWScreen';
-  static const String otpScreen = '/OtpScreen';
-  static const String setPassword = '/SetPassword';
-
-  // Products
-  static const String productsWithPagination = '/ProductsWithPagination';
-  static const String productsScreen = '/ProductsScreen';
-  static const String productDetailsScreen = '/ProductDetailsScreen';
-
-  // Main App Routes
-  static const String homeScreen = '/home_screen';
-  static const String navigationScreen = '/NavigationScreen';
-  static const String profile = '/Profile';
+  static const String forgetPasswordScreen = '/forgetPassword';
 }
 
-final class AppRouter {
-  AppRouter._();
+final class RouteGenerator {
+  static final RouteGenerator _routeGenerator = RouteGenerator._internal();
+  RouteGenerator._internal();
+  static RouteGenerator get instance => _routeGenerator;
 
-  static final GoRouter router = GoRouter(
-    navigatorKey: NavigationService.navigatorKey,
-    initialLocation: Routes.root,
-    routes: <RouteBase>[
-      GoRoute(
-        path: Routes.root,
-        name: 'root',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: const Loading(),
-        ),
-      ),
-      GoRoute(
-        path: Routes.loginScreen,
-        name: 'login',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: const LoginScreen(),
-        ),
-      ),
-      // GoRoute(
-      //   path: Routes.signUpScreen,
-      //   name: 'signUp',
-      //   pageBuilder: (context, state) => _platformPage(
-      //     state: state,
-      //     child: const SignUpScreen(),
-      //   ),
-      // ),
-      GoRoute(
-        path: Routes.profile,
-        name: 'profile',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: const ProfileScreen(),
-        ),
-      ),
+  static get defaultTargetPlatform => null;
 
-      // Placeholders (until real screens are implemented)
-      GoRoute(
-        path: Routes.forgotPWScreen,
-        name: 'forgotPassword',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: const _TodoScreen(title: 'Forgot Password'),
-        ),
-      ),
-      GoRoute(
-        path: Routes.otpScreen,
-        name: 'otp',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: _TodoScreen(title: 'OTP', extra: state.extra),
-        ),
-      ),
-      GoRoute(
-        path: Routes.setPassword,
-        name: 'setPassword',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: _TodoScreen(title: 'Set Password', extra: state.extra),
-        ),
-      ),
-      GoRoute(
-        path: Routes.productsScreen,
-        name: 'products',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: _TodoScreen(title: 'Products', extra: state.extra),
-        ),
-      ),
-      GoRoute(
-        path: Routes.productsWithPagination,
-        name: 'productsWithPagination',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: _TodoScreen(
-            title: 'Products With Pagination',
-            extra: state.extra,
-          ),
-        ),
-      ),
-      GoRoute(
-        path: Routes.productDetailsScreen,
-        name: 'productDetails',
-        pageBuilder: (context, state) => _platformPage(
-          state: state,
-          child: _TodoScreen(title: 'Product Details', extra: state.extra),
-        ),
-      ),
-    ],
-    errorPageBuilder: (context, state) => _platformPage(
-      state: state,
-      child: const Scaffold(
-        body: NotFoundWidget(),
-      ),
-    ),
-  );
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      // Auth Routes
+      case Routes.loginScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(builder: (context) => const LoginScreen())
+            : _FadedTransitionRoute(
+                widget: const LoginScreen(), settings: settings);
 
-  static Page<T> _platformPage<T>({
-    required GoRouterState state,
-    required Widget child,
-  }) {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return CupertinoPage<T>(
-        key: state.pageKey,
-        child: child,
-      );
+      case Routes.signUpScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(builder: (context) => const SignupScreen())
+            : _FadedTransitionRoute(
+                widget: const SignupScreen(), settings: settings);
+
+      // case Routes.otpScreen:
+      //   final args = settings.arguments as Map;
+      //   return defaultTargetPlatform == TargetPlatform.iOS
+      //       ? CupertinoPageRoute(
+      //           builder: (context) => OtpScreen(email: args['email']))
+      //       : _FadedTransitionRoute(
+      //           widget: OtpScreen(email: args['email']), settings: settings);
+
+      //  widget: const PropertyPhotosScreen(), settings: settings);
+
+      // case Routes.propertyPhotosScreen2:
+      //   return defaultTargetPlatform == TargetPlatform.iOS
+      //       ? CupertinoPageRoute(
+      //           builder: (context) => const PropertyPhotosScreen2())
+      //       : _FadedTransitionRoute(
+      //           widget: const PropertyPhotosScreen2(), settings: settings);
+
+      // case Routes.propertyFillesScreen2:
+      //   return defaultTargetPlatform == TargetPlatform.iOS
+      //       ? CupertinoPageRoute(
+      //           builder: (context) => const PropertyFillesScreen2())
+      //       : _FadedTransitionRoute(
+      //           widget: const PropertyFillesScreen2(), settings: settings);
+
+      // case Routes.searchRopertiesScreen:
+      //   return defaultTargetPlatform == TargetPlatform.iOS
+      //       ? CupertinoPageRoute(
+      //           builder: (context) => const SearchRopertiesScreen())
+      //       : _FadedTransitionRoute(
+      //           widget: const SearchRopertiesScreen(), settings: settings);
+
+      // case Routes.forgetOtpScreen:
+      // final args = settings.arguments as Map;
+      //   return defaultTargetPlatform == TargetPlatform.iOS
+      //       ? CupertinoPageRoute(
+      //           builder: (context) =>  ForgetOtpScreen(email: args["email"]))
+      //       : _FadedTransitionRoute(
+      //           widget:  ForgetOtpScreen(email: args["email"]), settings: settings);
+
+      default:
+        return null;
     }
-
-    return CustomTransitionPage<T>(
-      key: state.pageKey,
-      transitionDuration: const Duration(milliseconds: 1),
-      reverseTransitionDuration: const Duration(milliseconds: 1),
-      child: child,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: CurvedAnimation(
-            parent: animation,
-            curve: Curves.ease,
-          ),
-          child: child,
-        );
-      },
-    );
   }
 }
 
-class _TodoScreen extends StatelessWidget {
-  final String title;
-  final Object? extra;
+class _FadedTransitionRoute extends PageRouteBuilder {
+  final Widget widget;
+  @override
+  final RouteSettings settings;
 
-  const _TodoScreen({
-    required this.title,
-    this.extra,
-  });
+  _FadedTransitionRoute({required this.widget, required this.settings})
+      : super(
+          settings: settings,
+          reverseTransitionDuration: const Duration(milliseconds: 1),
+          pageBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return widget;
+          },
+          transitionDuration: const Duration(milliseconds: 1),
+          transitionsBuilder: (BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child) {
+            return FadeTransition(
+              opacity: CurvedAnimation(
+                parent: animation,
+                curve: Curves.ease,
+              ),
+              child: child,
+            );
+          },
+        );
+}
+
+class ScreenTitle extends StatelessWidget {
+  final Widget widget;
+
+  const ScreenTitle({super.key, required this.widget});
 
   @override
   Widget build(BuildContext context) {
-    final message = extra == null
-        ? '$title screen is not implemented yet.'
-        : '$title screen is not implemented yet.\n\nExtra: $extra';
-
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+    return TweenAnimationBuilder(
+      tween: Tween<double>(begin: .5, end: 1),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.bounceIn,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: child,
+        );
+      },
+      child: widget,
     );
   }
 }

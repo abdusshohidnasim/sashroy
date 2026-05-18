@@ -15,6 +15,4 @@ class LoginButtonPressed extends LoginEvent {
   List<Object?> get props => [email, password];
 }
 
-class TogglePasswordVisibility extends LoginEvent {}
-
-class ShowPasswordIconEvent extends LoginEvent {}
+class TogglePasswordVisibilityEvent extends LoginEvent {}

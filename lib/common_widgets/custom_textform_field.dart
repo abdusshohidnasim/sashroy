@@ -38,6 +38,7 @@ final class CustomFormField extends StatelessWidget {
   final Color? focusBorderColor;
   final Color? fillColor;
   final TextStyle? hintsTextStyle;
+  final AutovalidateMode? autovalidateMode;
 
   const CustomFormField({
     super.key,
@@ -71,6 +72,7 @@ final class CustomFormField extends StatelessWidget {
     this.focusBorderColor,
     this.fillColor,
     this.hintsTextStyle,
+    this.autovalidateMode
   });
 
   @override

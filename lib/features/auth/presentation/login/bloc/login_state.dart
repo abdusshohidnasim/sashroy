@@ -1,32 +1,30 @@
 import 'package:equatable/equatable.dart';
 
-abstract class LoginState extends Equatable {
+enum LoginStatus { initial, loading, success, failure }
+
+class LoginState extends Equatable {
+  final bool isPasswordVisible;
+  final LoginStatus status;
+  final String? errorMessage;
+
+  const LoginState({
+    this.isPasswordVisible = false,
+    this.status = LoginStatus.initial,
+    this.errorMessage,
+  });
+
+  LoginState copyWith({
+    bool? isPasswordVisible,
+    LoginStatus? status,
+    String? errorMessage,
+  }) {
+    return LoginState(
+      isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
+      status: status ?? this.status,
+      errorMessage: errorMessage,
+    );
+  }
+
   @override
-  List<Object?> get props => [];
-}
-
-class LoginInitial extends LoginState {}
-
-class LoginLoading extends LoginState {}
-
-class LoginSuccess extends LoginState {}
-
-class LoginFailure extends LoginState {
-  final String errormessage;
-  LoginFailure({required this.errormessage});
-  @override
-  List<Object?> get props => [errormessage];
-}
-
-class PasswordVisibilityState extends LoginState {
-  final bool isVisible;
-  PasswordVisibilityState({required this.isVisible});
-  @override
-  List<Object?> get props => [isVisible];
-}
-class ShowPasswordiconState extends LoginState {
-  final bool isVisible;
-  ShowPasswordiconState({required this.isVisible});
-  @override
-  List<Object?> get props => [isVisible];
+  List<Object?> get props => [isPasswordVisible, status, errorMessage];
 }

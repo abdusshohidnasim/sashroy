@@ -8,6 +8,8 @@ import 'gen/colors.gen.dart';
 import 'helpers/all_routes.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
+import 'helpers/navigation_service.dart';
+import 'loading_screen.dart';
 import 'networks/dio/dio.dart';
 
 void main() async {
@@ -64,7 +66,7 @@ class UtillScreenMobile extends StatelessWidget {
           onPopInvokedWithResult: (bool didPop, _) async {
             showMaterialDialog(context);
           },
-          child: MaterialApp.router(
+          child: MaterialApp(
               theme: ThemeData(
                   unselectedWidgetColor: Colors.white,
                   scaffoldBackgroundColor: AppColors.cFFFFFF,
@@ -74,7 +76,9 @@ class UtillScreenMobile extends StatelessWidget {
               builder: (context, widget) {
                 return MediaQuery(data: MediaQuery.of(context), child: widget!);
               },
-              routerConfig: AppRouter.router),
+            navigatorKey: NavigationService.navigatorKey,
+              onGenerateRoute: RouteGenerator.generateRoute,
+              home: const Loading()),
         );
       },
     );

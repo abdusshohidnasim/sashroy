@@ -14,11 +14,11 @@ import 'package:sashroy/helpers/all_routes.dart';
 import 'package:sashroy/helpers/navigation_service.dart';
 import 'package:sashroy/helpers/ui_helpers.dart';
 import '../../../../common_widgets/common_auth_text.dart';
-import 'bloc/login_bloc.dart';
-import 'bloc/login_event.dart';
+import '../login/bloc/login_bloc.dart';
+import '../login/bloc/login_event.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +28,11 @@ class LoginScreen extends StatelessWidget {
         body: BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
           if (state.status == LoginStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login successful!')),
+              const SnackBar(content: Text('Signup successful!')),
             );
           } else if (state.status == LoginStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login failed. Please try again.')),
+              const SnackBar(content: Text('Signup failed. Please try again.')),
             );
           }
         }, builder: (context, state) {
@@ -50,8 +50,8 @@ class LoginScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const CommonAuthText(
-                          text: 'Login to your account',
-                          buttontext: 'It’s great to see you again.',
+                          text: 'Create your account',
+                          buttontext: 'Let’s get started.',
                         ),
                         UIHelper.verticalSpace(24.h),
                         _buildTextforomfileName(
@@ -112,8 +112,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  NavigationService.navigateTo(
-                                      Routes.signUpScreen);
+                                  // Handle reset password tap
                                 },
                             ),
                           ],
@@ -153,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 );
                               },
-                              btnName: "Login",
+                              btnName: "Sign up",
                             );
                           },
                         ),
@@ -190,10 +189,8 @@ class LoginScreen extends StatelessWidget {
                             width: 20.w,
                           ),
                           bgColor: AppColors.cFFFFFF,
-                          onTap: () {
-                            NavigationService.navigateTo(Routes.signUpScreen);
-                          },
-                          btnName: "Login with Google",
+                          onTap: () {},
+                          btnName: "Sign up with Google",
                           textStyle: TextFontStyle.textStyle16C1A1A1ADGSM500
                               .copyWith(fontWeight: FontWeight.w700),
                         )
@@ -204,18 +201,20 @@ class LoginScreen extends StatelessWidget {
               ),
               RichText(
                   text: TextSpan(
-                text: 'Don’t have an account? ',
+                text: 'Already have an account? ',
                 style: TextFontStyle.textStyle14C808080GSR400,
                 children: [
                   TextSpan(
-                    text: 'Sign up',
+                    text: 'Login',
                     style: TextFontStyle.textStyle14C1A1A1ADGSM500.copyWith(
                       decoration: TextDecoration.underline,
                       fontWeight: FontWeight.w600,
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        NavigationService.navigateTo(Routes.signUpScreen);
+                        NavigationService.navigateToReplacement(
+                          Routes.loginScreen,
+                        );
                       },
                   ),
                 ],
