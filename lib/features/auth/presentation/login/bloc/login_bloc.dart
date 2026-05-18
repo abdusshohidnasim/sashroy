@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-   bool _isPasswordVisible = false;
-   bool _isPasswordIconVisible = false;
-  LoginBloc() : super(LoginInitial()) {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
-
-on<ShowPasswordIconEvent>((event, emit) {
-  _isPasswordIconVisible =! _isPasswordIconVisible;
-emit(ShowPasswordiconState(isVisible: _isPasswordVisible));
-}); 
-    on<TogglePasswordVisibility>((event, emit) {
-_isPasswordVisible = !_isPasswordVisible;
-     emit(PasswordVisibilityState(isVisible: _isPasswordVisible));
+  LoginBloc() : super(const LoginState()) {
+   
+    on<TogglePasswordVisibilityEvent>((event, emit) {
+      emit(state.copyWith(
+        isPasswordVisible: !state.isPasswordVisible,
+      ));
+   
     });
 
     on<LoginButtonPressed>((event, emit) async {
-      emit(LoginLoading());
+      emit(state.copyWith(status: LoginStatus.loading));
       try {
         await Future.delayed(const Duration(seconds: 2));
         if (event.email == 'user@example.com' && event.password == 'password') {
-          emit(LoginSuccess());
-        } else if (event.email.isEmpty || event.password.isEmpty) {
-          emit(LoginFailure(errormessage: 'Email and password are required'));
+          emit(state.copyWith(status: LoginStatus.success));
         } else {
-          emit(LoginFailure(errormessage: 'Invalid email or password'));
+          emit(state.copyWith(
+            status: LoginStatus.failure,
+            errorMessage: 'Invalid email or password',
+          ));
         }
       } catch (e) {
-        emit(
-            LoginFailure(errormessage: 'An error occurred. Please try again.'));
+        emit(state.copyWith(
+          status: LoginStatus.failure,
+          errorMessage: 'An error occurred.',
+        ));
       }
     });
   }

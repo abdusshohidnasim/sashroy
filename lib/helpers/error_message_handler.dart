@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../common_widgets/custom_toast.dart';
 
+
 class ErrorMessageHandler {
   static String getErrorMessage(dynamic error) {
     if (error is DioException) {
