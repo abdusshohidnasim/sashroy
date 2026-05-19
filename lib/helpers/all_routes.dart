@@ -1,15 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sashroy/features/auth/presentation/signup/signup_screen.dart';
 
+import '../features/auth/presentation/forgot_password_email/forgot_password_email_screen.dart';
+import '../features/auth/presentation/forgot_password_set/forgot_set_password_screen.dart';
 import '../features/auth/presentation/login/login_screen.dart';
 
 final class Routes {
   static final Routes _routes = Routes._internal();
   Routes._internal();
   static Routes get instance => _routes;
-  static const String loginScreen = '/logIn';
-  static const String signUpScreen = '/signUp';
-  static const String forgetPasswordScreen = '/forgetPassword';
+  static const String loginScreen = 'logIn';
+  static const String signUpScreen = 'signUp';
+  static const String forgotPasswordEmailScreen = 'ForgotPasswordEmai';
+  static const String forgotSetPasswordScreen = 'ForgotSetPassword';
 }
 
 final class RouteGenerator {
@@ -33,6 +36,19 @@ final class RouteGenerator {
             ? CupertinoPageRoute(builder: (context) => const SignupScreen())
             : _FadedTransitionRoute(
                 widget: const SignupScreen(), settings: settings);
+
+      case Routes.forgotPasswordEmailScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const ForgotPasswordEmailScreen())
+            : _FadedTransitionRoute(
+                widget: const ForgotPasswordEmailScreen(), settings: settings);
+                case Routes.forgotSetPasswordScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const ForgotSetPasswordScreen())
+            : _FadedTransitionRoute(
+                widget: const ForgotSetPasswordScreen(), settings: settings);
 
       // case Routes.otpScreen:
       //   final args = settings.arguments as Map;
