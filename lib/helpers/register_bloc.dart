@@ -1,11 +1,25 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sashroy/features/auth/presentation/forgot_password_email/bloc/forgot_password_bloc.dart';
 
+import '../features/auth/presentation/forgot_password_set/bloc/forgot_set_password_bloc.dart';
 import '../features/auth/presentation/login/bloc/login_bloc.dart';
+import '../features/auth/presentation/signup/bloc/signup_bloc.dart';
 
 List<BlocProvider> appBlocProviders = [
   BlocProvider<LoginBloc>(
     create: (_) => LoginBloc(),
+  ),
+
+  BlocProvider<SignupBloc>(
+    create: (_) => SignupBloc(),
+  ),
+  BlocProvider<ForgotPasswordBloc>(
+    create: (_) => ForgotPasswordBloc(),
+  ),
+
+  BlocProvider<ForgotSetPasswordBloc>(
+    create: (_) => ForgotSetPasswordBloc(),
   ),
   // BlocProvider<ProductBloc>(
   //   create: (_) => ProductBloc(),

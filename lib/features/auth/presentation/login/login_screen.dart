@@ -39,16 +39,17 @@ class LoginScreen extends StatelessWidget {
           final loginreadbloc = context.read<LoginBloc>();
           return Column(
             children: [
-              SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding: EdgeInsets.all(20.w),
-                  child: Form(
-                    key: loginreadbloc.formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: EdgeInsets.all(20.w),
+                    child: Form(
+                      key: loginreadbloc.formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                         const CommonAuthText(
                           text: 'Login to your account',
                           buttontext: 'It’s great to see you again.',
@@ -78,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                           enableBorderColor: AppColors.cE6E6E6,
                           hintText: "Enter your password",
                           isPass: true,
-                          isObsecure: loginreadbloc.state.isPasswordVisible,
+                          isObsecure: !state.isPasswordVisible,
                           suffixIcon: Padding(
                               padding: EdgeInsets.only(right: 20.w),
                               child: GestureDetector(
@@ -87,11 +88,11 @@ class LoginScreen extends StatelessWidget {
                                       .add(TogglePasswordVisibilityEvent());
                                 },
                                 child: Image.asset(
-                                  loginreadbloc.state.isPasswordVisible
+                                  state.isPasswordVisible
                                       ? Assets.icons.eyeOff.path
                                       : Assets.icons.eye.path,
                                   width: 20.w,
-                                  color: loginreadbloc.state.isPasswordVisible
+                                  color: state.isPasswordVisible
                                       ? AppColors.c808080
                                       : AppColors.c1A1A1A,
                                 ),
@@ -113,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   NavigationService.navigateTo(
-                                      Routes.signUpScreen);
+                                      Routes.forgotPasswordEmailScreen);
                                 },
                             ),
                           ],
@@ -201,6 +202,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
               ),
               RichText(
                   text: TextSpan(
