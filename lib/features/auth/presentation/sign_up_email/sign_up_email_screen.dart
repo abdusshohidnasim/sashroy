@@ -7,46 +7,44 @@ import 'package:sashroy/common_widgets/custom_scaffold.dart';
 import 'package:sashroy/common_widgets/custom_textform_field.dart';
 import 'package:sashroy/constants/text_font_style.dart';
 import 'package:sashroy/constants/validator.dart';
+import 'package:sashroy/features/auth/presentation/sign_up_email/bloc/sign_up_email_bloc.dart';
 import 'package:sashroy/gen/colors.gen.dart';
 import 'package:sashroy/helpers/all_routes.dart';
 import 'package:sashroy/helpers/navigation_service.dart';
 import 'package:sashroy/helpers/ui_helpers.dart';
 import '../../../../common_widgets/common_auth_text.dart';
-import 'bloc/forgot_password_bloc.dart';
-import 'bloc/forgot_password_email_state.dart';
 
-class ForgotPasswordEmailScreen extends StatelessWidget {
-  const ForgotPasswordEmailScreen({super.key});
+import 'bloc/sign_up_email_state.dart';
+
+class SignUpEmailScreen extends StatelessWidget {
+  const SignUpEmailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ForgotPasswordBloc>(
-      create: (BuildContext context) => ForgotPasswordBloc(),
+    return BlocProvider<SignUpEmailBloc>(
+      create: (BuildContext context) => SignUpEmailBloc(),
       child: CustomScaffold(
-        appBar: const CustomAppBar(
-          backgroundColor: AppColors.cFFFFFF
-        
-        ),
-        body: BlocConsumer<ForgotPasswordBloc, ForgotPasswordEmailState>(
+        appBar: const CustomAppBar(backgroundColor: AppColors.cFFFFFF),
+        body: BlocConsumer<SignUpEmailBloc, SignUpEmailState>(
             listener: (context, state) {
-          if (state.status == ForgotPasswordEmailStatus.success) {
+          if (state.status == SignUpEmailStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Email sent successfully!')),
             );
-          } else if (state.status == ForgotPasswordEmailStatus.failure) {
+          } else if (state.status == SignUpEmailStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                   content: Text('Failed to send email. Please try again.')),
             );
           }
         }, builder: (context, state) {
-          final forgotPasswordBloc = context.read<ForgotPasswordBloc>();
+          final signUpEmailBloc = context.read<SignUpEmailBloc>();
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.all(20.w),
               child: Form(
-                key: forgotPasswordBloc.formKey,
+                key: signUpEmailBloc.formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +62,7 @@ class ForgotPasswordEmailScreen extends StatelessWidget {
                     CustomFormField(
                       validator: emailValidator,
                       textInputAction: TextInputAction.next,
-                      controller: forgotPasswordBloc.emailController,
+                      controller: signUpEmailBloc.emailController,
                       fillColor: AppColors.cFFFFFF,
                       enableBorderColor: AppColors.cE6E6E6,
                       hintText: "Enter your email address",
@@ -72,29 +70,26 @@ class ForgotPasswordEmailScreen extends StatelessWidget {
                     UIHelper.verticalSpace(24.h),
                     AnimatedBuilder(
                       animation: Listenable.merge([
-                        forgotPasswordBloc.emailController,
+                        signUpEmailBloc.emailController,
                       ]),
                       builder: (context, child) {
-                        final emailText =
-                            forgotPasswordBloc.emailController.text;
-          
-                        final isEnabled =
-                            emailValidator(emailText) == null;
-          
+                        final emailText = signUpEmailBloc.emailController.text;
+
+                        final isEnabled = emailValidator(emailText) == null;
+
                         return CustomButton(
-                          isLoading: state.status ==
-                              ForgotPasswordEmailStatus.loading,
-                          bgColor: isEnabled
-                              ? AppColors.c1A1A1A
-                              : AppColors.cCCCCCC,
+                          isLoading: state.status == SignUpEmailStatus.loading,
+                          bgColor:
+                              isEnabled ? AppColors.c1A1A1A : AppColors.cCCCCCC,
                           onTap: () {
-                           NavigationService.navigateTo(Routes.resetVerifecationScreen); 
+                            NavigationService.navigateTo(
+                                Routes.signUpVerificationScreen);
                             // final isValid = forgotPasswordBloc
                             //         .formKey.currentState
                             //         ?.validate() ??
                             //     false;
                             // if (!isValid) return;
-          
+
                             // forgotPasswordBloc.add(
                             //   ForgotPasswordEmailButtonPressed(
                             //     email: emailText,

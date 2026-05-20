@@ -37,6 +37,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/card.png
   AssetGenImage get cardPng_ => const AssetGenImage('assets/icons/card.png');
 
+  /// File path: assets/icons/Check-duotone.png
+  AssetGenImage get checkDuotone =>
+      const AssetGenImage('assets/icons/Check-duotone.png');
+
   /// File path: assets/icons/Discount_card.png
   AssetGenImage get discountCard =>
       const AssetGenImage('assets/icons/Discount_card.png');
@@ -174,6 +178,7 @@ class $AssetsIconsGen {
         cancel,
         cardPng,
         cardPng_,
+        checkDuotone,
         discountCard,
         ellipse1,
         eye,

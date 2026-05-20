@@ -30,6 +30,7 @@ class LoginScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Login successful!')),
             );
+            
           } else if (state.status == LoginStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Login failed. Please try again.')),
@@ -153,6 +154,7 @@ class LoginScreen extends StatelessWidget {
                                     password: passwordText,
                                   ),
                                 );
+                                NavigationService.navigateTo(Routes.homeScreen);
                               },
                               btnName: "Login",
                             );
@@ -197,31 +199,36 @@ class LoginScreen extends StatelessWidget {
                           btnName: "Login with Google",
                           textStyle: TextFontStyle.textStyle16C1A1A1ADGSM500
                               .copyWith(fontWeight: FontWeight.w700),
-                        )
+                        ),
+UIHelper.verticalSpace(40.h),
+                        Center(
+                          child: RichText(
+                                            text: TextSpan(
+                                          text: 'Don’t have an account? ',
+                                          style: TextFontStyle.textStyle14C808080GSR400,
+                                          children: [
+                                            TextSpan(
+                                              text: 'Sign up',
+                                              style: TextFontStyle.textStyle14C1A1A1ADGSM500.copyWith(
+                                                decoration: TextDecoration.underline,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                          NavigationService.navigateTo(Routes.signUpScreen);
+                                                },
+                                            ),
+                                          ],
+                                        )),
+                        ),
+      
                       ],
                     ),
                   ),
                 ),
               ),
               ),
-              RichText(
-                  text: TextSpan(
-                text: 'Don’t have an account? ',
-                style: TextFontStyle.textStyle14C808080GSR400,
-                children: [
-                  TextSpan(
-                    text: 'Sign up',
-                    style: TextFontStyle.textStyle14C1A1A1ADGSM500.copyWith(
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        NavigationService.navigateTo(Routes.signUpScreen);
-                      },
-                  ),
-                ],
-              )),
+              
             ],
           );
         }),

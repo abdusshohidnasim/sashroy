@@ -4,6 +4,10 @@ import 'package:sashroy/features/auth/presentation/signup/signup_screen.dart';
 import '../features/auth/presentation/forgot_password_email/forgot_password_email_screen.dart';
 import '../features/auth/presentation/forgot_password_set/forgot_set_password_screen.dart';
 import '../features/auth/presentation/login/login_screen.dart';
+import '../features/auth/presentation/forgot_verification/forgot_verifecation_screen.dart';
+import '../features/auth/presentation/sign_up_email/sign_up_email_screen.dart';
+import '../features/auth/presentation/sign_up_verify_email/sign_up_verify_email_screen.dart';
+import '../features/home/presentation/home.dart';
 
 final class Routes {
   static final Routes _routes = Routes._internal();
@@ -13,6 +17,10 @@ final class Routes {
   static const String signUpScreen = 'signUp';
   static const String forgotPasswordEmailScreen = 'ForgotPasswordEmai';
   static const String forgotSetPasswordScreen = 'ForgotSetPassword';
+  static const String resetVerifecationScreen = 'ResetVerifecation';
+  static const String signUpEmailScreen = 'SignUpEmail';
+  static const String signUpVerificationScreen = 'SignUpVerification';
+  static const String homeScreen = 'HomeScreen';
 }
 
 final class RouteGenerator {
@@ -43,12 +51,39 @@ final class RouteGenerator {
                 builder: (context) => const ForgotPasswordEmailScreen())
             : _FadedTransitionRoute(
                 widget: const ForgotPasswordEmailScreen(), settings: settings);
-                case Routes.forgotSetPasswordScreen:
+      case Routes.forgotSetPasswordScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
             ? CupertinoPageRoute(
                 builder: (context) => const ForgotSetPasswordScreen())
             : _FadedTransitionRoute(
                 widget: const ForgotSetPasswordScreen(), settings: settings);
+      case Routes.resetVerifecationScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const ResetVerifecationScreen())
+            : _FadedTransitionRoute(
+                widget: const ResetVerifecationScreen(), settings: settings);
+      case Routes.signUpEmailScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const SignUpEmailScreen())
+            : _FadedTransitionRoute(
+                widget: const SignUpEmailScreen(), settings: settings);
+      case Routes.signUpVerificationScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const SignUpVerifyEmailScreen())
+            : _FadedTransitionRoute(
+                widget: const SignUpVerifyEmailScreen(), settings: settings);
+
+case Routes.homeScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const HomeScreen())
+            : _FadedTransitionRoute(
+                widget: const HomeScreen(), settings: settings);
+
+
 
       // case Routes.otpScreen:
       //   final args = settings.arguments as Map;

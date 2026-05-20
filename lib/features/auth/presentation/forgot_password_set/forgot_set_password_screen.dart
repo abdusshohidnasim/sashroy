@@ -9,9 +9,11 @@ import 'package:sashroy/constants/text_font_style.dart';
 import 'package:sashroy/constants/validator.dart';
 import 'package:sashroy/gen/assets.gen.dart';
 import 'package:sashroy/gen/colors.gen.dart';
+import 'package:sashroy/helpers/navigation_service.dart';
 import 'package:sashroy/helpers/ui_helpers.dart';
 import '../../../../common_widgets/common_auth_text.dart';
-import '../widgets/show_dilog.dart';
+import '../../../../common_widgets/common_sucessfull_dilog.dart';
+import '../../../../helpers/all_routes.dart';
 import 'bloc/forgot_set_password_bloc.dart';
 import 'bloc/forgot_set_password_event.dart';
 import 'bloc/forgot_set_passrord_state.dart';
@@ -160,7 +162,14 @@ class ForgotSetPasswordScreen extends StatelessWidget {
                                     ? AppColors.c1A1A1A
                                     : AppColors.cCCCCCC,
                                 onTap: () {
-                                  SucessfullShowDilog();
+                                  CommonSucessfullDilog.show(
+                                    context: context,
+                                    onTap: () {
+                                     NavigationService.navigateToReplacement(Routes.loginScreen);
+                                    },
+                                    btnName: "Login",
+                                  );
+
                                   // final isValid = forgotsetPasswordBloc
                                   //         .formKey.currentState
                                   //         ?.validate() ??
