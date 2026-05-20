@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sashroy/features/auth/presentation/signup/signup_screen.dart';
 
+import '../buttom_nav_bar.dart';
 import '../features/auth/presentation/forgot_password_email/forgot_password_email_screen.dart';
 import '../features/auth/presentation/forgot_password_set/forgot_set_password_screen.dart';
 import '../features/auth/presentation/login/login_screen.dart';
@@ -21,6 +22,8 @@ final class Routes {
   static const String signUpEmailScreen = 'SignUpEmail';
   static const String signUpVerificationScreen = 'SignUpVerification';
   static const String homeScreen = 'HomeScreen';
+   static const String buttomNavBar = 'ButtomNavBar';
+  
 }
 
 final class RouteGenerator {
@@ -82,6 +85,12 @@ case Routes.homeScreen:
                 builder: (context) => const HomeScreen())
             : _FadedTransitionRoute(
                 widget: const HomeScreen(), settings: settings);
+        case Routes.buttomNavBar:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const ButtomNavBar())
+            : _FadedTransitionRoute(
+                widget: const ButtomNavBar(), settings: settings);
 
 
 

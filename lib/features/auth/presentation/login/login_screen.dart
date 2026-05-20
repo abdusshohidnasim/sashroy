@@ -154,7 +154,7 @@ class LoginScreen extends StatelessWidget {
                                     password: passwordText,
                                   ),
                                 );
-                                NavigationService.navigateTo(Routes.homeScreen);
+                                NavigationService.navigateTo(Routes.buttomNavBar);
                               },
                               btnName: "Login",
                             );
