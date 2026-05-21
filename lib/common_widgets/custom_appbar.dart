@@ -17,6 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final VoidCallback? onBackPress;
   final bool isleating; 
+  final Widget? leftImage;
 
   const CustomAppBar({
     super.key,
@@ -27,7 +28,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.height = 70,
     this.backgroundColor,
     this.onBackPress, 
-     this.isleating = false,
+     this.isleating = false, 
+     this.leftImage,
 
   });
 
@@ -109,7 +111,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: AppColors.cFFFFFF,
               shape: BoxShape.circle,
             ),
-            child: Image.asset(
+            child: leftImage?? Image.asset(
               Assets.icons.leftArrow.path,
               height: 30.w,
               width: 30.w,

@@ -59,9 +59,8 @@ class $AssetsIconsGen {
   AssetGenImage get headphones =>
       const AssetGenImage('assets/icons/Headphones.png');
 
-  /// File path: assets/icons/Location-duotone.png
-  AssetGenImage get locationDuotone =>
-      const AssetGenImage('assets/icons/Location-duotone.png');
+  /// File path: assets/icons/Home.png
+  AssetGenImage get home => const AssetGenImage('assets/icons/Home.png');
 
   /// File path: assets/icons/Location.png
   AssetGenImage get location =>
@@ -101,6 +100,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/by_card.png
   AssetGenImage get byCard => const AssetGenImage('assets/icons/by_card.png');
 
+  /// File path: assets/icons/by_card_buttom_nav.png
+  AssetGenImage get byCardButtomNav =>
+      const AssetGenImage('assets/icons/by_card_buttom_nav.png');
+
   /// File path: assets/icons/circel_black_icon.png
   AssetGenImage get circelBlackIcon =>
       const AssetGenImage('assets/icons/circel_black_icon.png');
@@ -130,6 +133,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/google.png
   AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
 
+  /// File path: assets/icons/hardButomnav.png
+  AssetGenImage get hardButomnav =>
+      const AssetGenImage('assets/icons/hardButomnav.png');
+
   /// File path: assets/icons/hard_no_colors.png
   AssetGenImage get hardNoColors =>
       const AssetGenImage('assets/icons/hard_no_colors.png');
@@ -141,6 +148,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/left_Arrow.png
   AssetGenImage get leftArrow =>
       const AssetGenImage('assets/icons/left_Arrow.png');
+
+  /// File path: assets/icons/left_arrow_icon.png
+  AssetGenImage get leftArrowIcon =>
+      const AssetGenImage('assets/icons/left_arrow_icon.png');
 
   /// File path: assets/icons/notification.png
   AssetGenImage get notification =>
@@ -162,8 +173,9 @@ class $AssetsIconsGen {
   AssetGenImage get rightIconNoColors =>
       const AssetGenImage('assets/icons/right_icon_no_colors.png');
 
-  /// File path: assets/icons/sale.png
-  AssetGenImage get sale => const AssetGenImage('assets/icons/sale.png');
+  /// File path: assets/icons/solace_logo.png
+  AssetGenImage get solaceLogo =>
+      const AssetGenImage('assets/icons/solace_logo.png');
 
   /// File path: assets/icons/star_harijantal.png
   AssetGenImage get starHarijantal =>
@@ -184,7 +196,7 @@ class $AssetsIconsGen {
         eye,
         filter,
         headphones,
-        locationDuotone,
+        home,
         location,
         logout,
         question,
@@ -196,6 +208,7 @@ class $AssetsIconsGen {
         walletDuotone,
         animaitonIcon,
         byCard,
+        byCardButtomNav,
         circelBlackIcon,
         circelNoColorsIcon,
         circerlBlackEmty,
@@ -204,15 +217,17 @@ class $AssetsIconsGen {
         errorImage,
         eyeOff,
         google,
+        hardButomnav,
         hardNoColors,
         hardReadColors,
         leftArrow,
+        leftArrowIcon,
         notification,
         person3dash,
         placeholderImage,
         rightArrow,
         rightIconNoColors,
-        sale,
+        solaceLogo,
         starHarijantal
       ];
 }
@@ -223,8 +238,18 @@ class $AssetsImagesGen {
   /// File path: assets/images/SASHROY.png
   AssetGenImage get sashroy => const AssetGenImage('assets/images/SASHROY.png');
 
+  /// File path: assets/images/Splash.jpg
+  AssetGenImage get splash => const AssetGenImage('assets/images/Splash.jpg');
+
+  /// File path: assets/images/ULTIMATE.png
+  AssetGenImage get ultimate =>
+      const AssetGenImage('assets/images/ULTIMATE.png');
+
+  /// File path: assets/images/sale.png
+  AssetGenImage get sale => const AssetGenImage('assets/images/sale.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [sashroy];
+  List<AssetGenImage> get values => [sashroy, splash, ultimate, sale];
 }
 
 class $AssetsLottieGen {
