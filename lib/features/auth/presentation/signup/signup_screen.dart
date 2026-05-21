@@ -199,18 +199,19 @@ class SignupScreen extends StatelessWidget {
                                     ? AppColors.c1A1A1A
                                     : AppColors.cCCCCCC,
                                 onTap: () {
-                                  final isValid = signupReadBloc
-                                          .formKey.currentState
-                                          ?.validate() ??
-                                      false;
-                                  if (!isValid) return;
+                                  NavigationService.navigateTo(Routes.signUpEmailScreen);
+                                  // final isValid = signupReadBloc
+                                  //         .formKey.currentState
+                                  //         ?.validate() ??
+                                  //     false;
+                                  // if (!isValid) return;
 
-                                  signupReadBloc.add(
-                                    SignupButtompressedEvent(
-                                      email: emailText,
-                                      password: passwordText,
-                                    ),
-                                  );
+                                  // signupReadBloc.add(
+                                  //   SignupButtompressedEvent(
+                                  //     email: emailText,
+                                  //     password: passwordText,
+                                  //   ),
+                                  // );
                                 },
                                 btnName: "Sign up",
                               );
@@ -249,37 +250,44 @@ class SignupScreen extends StatelessWidget {
                               width: 20.w,
                             ),
                             bgColor: AppColors.cFFFFFF,
-                            onTap: () {},
+                            onTap: () {
+
+                            },
                             btnName: "Sign up with Google",
                             textStyle: TextFontStyle.textStyle16C1A1A1ADGSM500
                                 .copyWith(fontWeight: FontWeight.w700),
-                          )
+                          ),
+
+UIHelper.verticalSpace(40.h),
+                           Center(
+                             child: RichText(
+                                               text: TextSpan(
+                                             text: 'Already have an account? ',
+                                             style: TextFontStyle.textStyle14C808080GSR400,
+                                             children: [
+                                               TextSpan(
+                                                 text: 'Login',
+                                                 style: TextFontStyle.textStyle14C1A1A1ADGSM500.copyWith(
+                                                   decoration: TextDecoration.underline,
+                                                   fontWeight: FontWeight.w600,
+                                                 ),
+                                                 recognizer: TapGestureRecognizer()
+                                                   ..onTap = () {
+                                                     NavigationService.navigateToReplacement(
+                                                       Routes.loginScreen,
+                                                     );
+                                                   },
+                                               ),
+                                             ],
+                                           )),
+                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
-              RichText(
-                  text: TextSpan(
-                text: 'Already have an account? ',
-                style: TextFontStyle.textStyle14C808080GSR400,
-                children: [
-                  TextSpan(
-                    text: 'Login',
-                    style: TextFontStyle.textStyle14C1A1A1ADGSM500.copyWith(
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        NavigationService.navigateToReplacement(
-                          Routes.loginScreen,
-                        );
-                      },
-                  ),
-                ],
-              )),
+             
             ],
           );
         }),

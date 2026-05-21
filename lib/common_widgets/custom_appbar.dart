@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants/text_font_style.dart';
 import '../gen/assets.gen.dart';
 import '../gen/colors.gen.dart';
+import '../helpers/navigation_service.dart';
 import '../helpers/ui_helpers.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -13,7 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leadingWidget;
   final List<Widget>? actionWidgets;
   final double height;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final VoidCallback? onBackPress;
   final bool isleating; 
 
@@ -24,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leadingWidget,
     this.actionWidgets,
     this.height = 70,
-    this.backgroundColor = Colors.transparent,
+    this.backgroundColor,
     this.onBackPress, 
      this.isleating = false,
 
@@ -35,15 +36,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final resolvedBackgroundColor = backgroundColor ??
+        Theme.of(context).appBarTheme.backgroundColor ??
+        Theme.of(context).colorScheme.surface;
+
     return AppBar(
-     
+      backgroundColor: resolvedBackgroundColor,
+      surfaceTintColor: Colors.transparent,
       elevation: 0,
       automaticallyImplyLeading: false,
       systemOverlayStyle: SystemUiOverlayStyle.light,
-      leadingWidth: 70.w,
+      leadingWidth: 50.w,
 
       /// Leading Button
-      leading: 
+      leading:
         Padding(
             padding: EdgeInsets.only(left: 20.w),
             child: leadingWidget ?? _buildBackButton(context),
@@ -85,7 +91,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget _buildBackButton(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: onBackPress ?? () => Navigator.pop(context),
+        onTap: onBackPress ??
+            () {
+              final navigator = NavigationService.navigatorKey.currentState;
+              if (navigator != null && navigator.canPop()) {
+                navigator.pop();
+                return;
+              }
+
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
+            },
         child: Container(
             padding: EdgeInsets.all(8.w),
             decoration: const BoxDecoration(
@@ -94,8 +111,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             child: Image.asset(
               Assets.icons.leftArrow.path,
-              height: 24.w,
-              width: 24.w,
+              height: 30.w,
+              width: 30.w,
               color: AppColors.c1A1A1A,
             )),
       ),
