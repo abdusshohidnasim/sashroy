@@ -1,23 +1,31 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../../constants/app_constants.dart';
-import '../../../../helpers/di.dart';
-import '../../../../helpers/error_message_handler.dart';
-import '../../../../helpers/post_login.dart';
-import '../../../../networks/dio/dio.dart';
-import '../../../../networks/rx_base.dart';
+import '../../../../../common_widgets/custom_toast.dart';
+import '../../../../../networks/rx_base.dart';
 import 'api.dart';
 
-final class PostLoginRx extends RxResponseInt {
-  final api = PostLoginApi.instance;
-  String message = "Something went wrong";
-  PostLoginRx({required super.empty, required super.dataFetcher});
-  ValueStream get getPostLoginRes => dataFetcher.stream;
+final class PostloginRx extends RxResponseInt {
+  final api = PostloginApi.instance;
 
-  Future<bool> postLogin(
-      {required String email, required String password}) async {
+  String message = "Something went wrong";
+
+  PostloginRx({required super.empty, required super.dataFetcher});
+
+  ValueStream get filleData => dataFetcher.stream;
+
+  Future<bool> post({
+   required String email,
+    required String password,
+  }) async {
     try {
-      Map<String, dynamic> data = {"email": email, "password": password};
-      Map resdata = await api.postLogIn(data);
+      Map<String, dynamic> data = {
+        "email": email,
+        "password": password,
+      };
+
+      Map resdata = await api.postloginfunction(data);
       return await handleSuccessWithReturn(resdata);
     } catch (error) {
       return await handleErrorWithReturn(error);
@@ -26,24 +34,22 @@ final class PostLoginRx extends RxResponseInt {
 
   @override
   handleSuccessWithReturn(data) async {
-    String? accesstoken = data['data']['token'];
-
-    int id = data['data']["user"]['id'];
-    DioSingleton.instance.update(accesstoken!);
-    await appData.write(kKeyIsLoggedIn, true);
-    await appData.write(kKeyIsExploring, false);
-    await appData.write(kKeyUserID, id);
-    await appData.write(kKeyAccessToken, accesstoken);
-
+    log(data.toString());
     dataFetcher.sink.add(data);
-    performPostLoginActions();
-
     return true;
   }
 
   @override
   handleErrorWithReturn(error) {
-    ErrorMessageHandler.showErrorToast(error); // Just one call!
+    String message = 'Something went wrong';
+    log(error.toString());
+    if (error is DioException) {
+      message = error.response?.data["message"].toString() ?? "Something went wrong";
+      if (error.type == DioExceptionType.connectionError) {
+        message = "Check Your Network Connection";
+      }
+    }
+    customToastMessage('Error', message);
     return false;
   }
 }
