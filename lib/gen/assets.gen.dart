@@ -45,6 +45,10 @@ class $AssetsIconsGen {
   AssetGenImage get discountCard =>
       const AssetGenImage('assets/icons/Discount_card.png');
 
+  /// File path: assets/icons/Discount_card_full_clours.png
+  AssetGenImage get discountCardFullClours =>
+      const AssetGenImage('assets/icons/Discount_card_full_clours.png');
+
   /// File path: assets/icons/Ellipse 1.png
   AssetGenImage get ellipse1 =>
       const AssetGenImage('assets/icons/Ellipse 1.png');
@@ -153,9 +157,17 @@ class $AssetsIconsGen {
   AssetGenImage get leftArrowIcon =>
       const AssetGenImage('assets/icons/left_arrow_icon.png');
 
+  /// File path: assets/icons/location_full_colors.png
+  AssetGenImage get locationFullColors =>
+      const AssetGenImage('assets/icons/location_full_colors.png');
+
   /// File path: assets/icons/notification.png
   AssetGenImage get notification =>
       const AssetGenImage('assets/icons/notification.png');
+
+  /// File path: assets/icons/notification_full_colors.png
+  AssetGenImage get notificationFullColors =>
+      const AssetGenImage('assets/icons/notification_full_colors.png');
 
   /// File path: assets/icons/person_3dash.png
   AssetGenImage get person3dash =>
@@ -181,6 +193,10 @@ class $AssetsIconsGen {
   AssetGenImage get starHarijantal =>
       const AssetGenImage('assets/icons/star_harijantal.png');
 
+  /// File path: assets/icons/user_full_colros.png
+  AssetGenImage get userFullColros =>
+      const AssetGenImage('assets/icons/user_full_colros.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         bag,
@@ -192,6 +208,7 @@ class $AssetsIconsGen {
         cardPng_,
         checkDuotone,
         discountCard,
+        discountCardFullClours,
         ellipse1,
         eye,
         filter,
@@ -222,13 +239,16 @@ class $AssetsIconsGen {
         hardReadColors,
         leftArrow,
         leftArrowIcon,
+        locationFullColors,
         notification,
+        notificationFullColors,
         person3dash,
         placeholderImage,
         rightArrow,
         rightIconNoColors,
         solaceLogo,
-        starHarijantal
+        starHarijantal,
+        userFullColros
       ];
 }
 
@@ -237,6 +257,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/SASHROY.png
   AssetGenImage get sashroy => const AssetGenImage('assets/images/SASHROY.png');
+
+  /// File path: assets/images/Screenshot From 2026-05-21 14-22-36.png
+  AssetGenImage get screenshotFrom20260521142236 => const AssetGenImage(
+      'assets/images/Screenshot From 2026-05-21 14-22-36.png');
 
   /// File path: assets/images/Splash.jpg
   AssetGenImage get splash => const AssetGenImage('assets/images/Splash.jpg');
@@ -249,7 +273,8 @@ class $AssetsImagesGen {
   AssetGenImage get sale => const AssetGenImage('assets/images/sale.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [sashroy, splash, ultimate, sale];
+  List<AssetGenImage> get values =>
+      [sashroy, screenshotFrom20260521142236, splash, ultimate, sale];
 }
 
 class $AssetsLottieGen {

@@ -8,6 +8,8 @@ import 'package:sashroy/common_widgets/viw_all_widgtes.dart';
 import 'package:sashroy/constants/text_font_style.dart';
 import 'package:sashroy/features/home/presentation/widgets/top_image_text.dart';
 import 'package:sashroy/gen/colors.gen.dart';
+import 'package:sashroy/helpers/all_routes.dart';
+import 'package:sashroy/helpers/navigation_service.dart';
 import 'package:sashroy/helpers/ui_helpers.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -79,7 +81,9 @@ class _HomeScreenState
           UIHelper.horizontalSpace(20.w),
           Image.asset(Assets.images.sashroy.path, height: 24.h, width: 150.w),
           const Spacer(),
-          GestureDetector(onTap: () {}, child: Image.asset(Assets.icons.notification.path, height: 24.h, width: 24.w)),
+          GestureDetector(onTap: () {
+            NavigationService.navigateTo(Routes.notificationScreen); 
+          }, child: Image.asset(Assets.icons.notification.path, height: 24.h, width: 24.w)),
           UIHelper.horizontalSpace(20.w),
         ],
       ),

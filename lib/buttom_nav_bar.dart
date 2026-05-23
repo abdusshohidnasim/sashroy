@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sashroy/features/home/presentation/home.dart';
+import 'package:sashroy/features/save/presentation/save_screen.dart';
 import '../gen/colors.gen.dart';
 import '../constants/text_font_style.dart';
 import 'gen/assets.gen.dart';
@@ -18,7 +19,7 @@ class _ButtomNavBarState extends State<ButtomNavBar> {
   final List<Widget> _screens = const [
     HomeScreen(),
     Center(child: Text("Listings Screen")),
-    Center(child: Text("Add Screen")),
+  SaveScreen(),
     Center(child: Text("Messages Screen")),
     Center(child: Text("Messages Screen")),
     Center(child: Text("Profile Screen")),

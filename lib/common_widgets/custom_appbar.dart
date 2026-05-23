@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final Color? backgroundColor;
   final VoidCallback? onBackPress;
-  final bool isleating; 
+  final bool isleating;
   final Widget? leftImage;
 
   const CustomAppBar({
@@ -27,10 +26,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actionWidgets,
     this.height = 70,
     this.backgroundColor,
-    this.onBackPress, 
-     this.isleating = false, 
-     this.leftImage,
-
+    this.onBackPress,
+    this.isleating = false,
+    this.leftImage,
   });
 
   @override
@@ -51,36 +49,36 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: 50.w,
 
       /// Leading Button
-      leading:
-        Padding(
-            padding: EdgeInsets.only(left: 20.w),
-            child: leadingWidget ?? _buildBackButton(context),
-          ),
-       
-      
+      leading: Padding(
+        padding: EdgeInsets.only(left: 20.w),
+        child: leadingWidget ?? _buildBackButton(context),
+      ),
 
       titleSpacing: 0,
 
       /// Title Section
-      title: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (title != null)
-              Text(
-                title!,
-                style: TextFontStyle.textStyle12C808080AGSS400,
-              ),
-            if (subTitle != null) ...[
-              UIHelper.verticalSpace(2.h),
-              Text(
-                subTitle!,
-                style: TextFontStyle.textStyle12C808080GSM500,
-              ),
-            ]
-          ],
+      title: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (title != null)
+                Text(
+                  title!,
+                  style: TextFontStyle.textStyle24C1A1A1ADGSS600,
+                ),
+              if (subTitle != null) ...[
+                UIHelper.verticalSpace(2.h),
+                Text(
+                  subTitle!,
+                  style: TextFontStyle.textStyle12C808080GSM500,
+                ),
+              ]
+            ],
+          ),
         ),
       ),
 
@@ -106,17 +104,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               }
             },
         child: Container(
-            padding: EdgeInsets.all(8.w),
+            padding: EdgeInsets.all(5.w),
             decoration: const BoxDecoration(
               color: AppColors.cFFFFFF,
               shape: BoxShape.circle,
             ),
-            child: leftImage?? Image.asset(
-              Assets.icons.leftArrow.path,
-              height: 30.w,
-              width: 30.w,
-              color: AppColors.c1A1A1A,
-            )),
+            child: leftImage ??
+                Image.asset(
+                  Assets.icons.leftArrow.path,
+                  height: 30.w,
+                  width: 30.w,
+                  color: AppColors.c1A1A1A,
+                )),
       ),
     );
   }

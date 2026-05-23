@@ -162,9 +162,8 @@ final class ProductCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: titleStyle ??
-                    TextFontStyle.textStyle16C1A1A1AGSS600.copyWith(overflow: TextOverflow.ellipsis),
-                   
-               
+                    TextFontStyle.textStyle16C1A1A1AGSS600
+                        .copyWith(overflow: TextOverflow.ellipsis),
               ),
               SizedBox(height: 8.h),
               Row(
@@ -179,8 +178,6 @@ final class ProductCard extends StatelessWidget {
                       originalPriceStyle: originalPriceStyle ??
                           TextFontStyle.textStyle12C808080GSM500.copyWith(
                             decoration: TextDecoration.lineThrough,
-                          
-                            
                           ),
                       discountStyle: discountStyle ??
                           TextFontStyle.textStyle12C808080GSM500.copyWith(

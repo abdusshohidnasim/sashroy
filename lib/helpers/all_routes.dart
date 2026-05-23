@@ -8,7 +8,10 @@ import '../features/auth/presentation/login/login_screen.dart';
 import '../features/auth/presentation/forgot_verification/forgot_verifecation_screen.dart';
 import '../features/auth/presentation/sign_up_email/sign_up_email_screen.dart';
 import '../features/auth/presentation/sign_up_verify_email/sign_up_verify_email_screen.dart';
+import '../features/details/presentaion/details_screen.dart';
 import '../features/home/presentation/home.dart';
+import '../features/notification/presintation/notification_screen.dart';
+import '../features/save/presentation/save_screen.dart';
 
 final class Routes {
   static final Routes _routes = Routes._internal();
@@ -24,6 +27,8 @@ final class Routes {
   static const String homeScreen = 'HomeScreen';
    static const String buttomNavBar = 'ButtomNavBar';
    static const String notificationScreen = 'NotificationScreen';
+   static const String detailsScreen = 'DetailsScreen';
+   static const String saveScreen = 'SaveScreen';
   
 }
 
@@ -93,9 +98,30 @@ case Routes.homeScreen:
             : _FadedTransitionRoute(
                 widget: const ButtomNavBar(), settings: settings);
 
+                 case Routes.notificationScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const NotificationScreen())
+            : _FadedTransitionRoute(
+                widget: const NotificationScreen(), settings: settings);
+
+      case Routes.detailsScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const DetailsScreen())
+            : _FadedTransitionRoute(
+                widget: const DetailsScreen(), settings: settings);
 
 
-      // case Routes.otpScreen:
+                 case Routes.saveScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const SaveScreen())
+            : _FadedTransitionRoute(
+                widget: const SaveScreen(), settings: settings);
+
+
+
       //   final args = settings.arguments as Map;
       //   return defaultTargetPlatform == TargetPlatform.iOS
       //       ? CupertinoPageRoute(
