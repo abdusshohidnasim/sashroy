@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../constants/app_constants.dart';
+import '../../../../../helpers/di.dart';
+import '../../../../../helpers/navigation_service.dart';
+import '../../../../../helpers/all_routes.dart';
+import '../../../../../networks/api_acess.dart';
+import '../../../../../common_widgets/custom_toast.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
@@ -10,31 +16,47 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final formKey = GlobalKey<FormState>();
 
   LoginBloc() : super(const LoginState()) {
-   
     on<TogglePasswordVisibilityEvent>((event, emit) {
       emit(state.copyWith(
         isPasswordVisible: !state.isPasswordVisible,
       ));
-   
     });
 
     on<LoginButtonPressed>((event, emit) async {
+      debugPrint('🔵 LoginButtonPressed event received');
       emit(state.copyWith(status: LoginStatus.loading));
-      try {
-        await Future.delayed(const Duration(seconds: 2));
-        if (event.email == 'user@example.com' && event.password == 'password') {
-          emit(state.copyWith(status: LoginStatus.success));
-        } else {
+
+      if (formKey.currentState!.validate()) {
+        debugPrint('✅ Form is valid, calling API...');
+        try {
+          bool success = await postLoginRxObj.post(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+          debugPrint('📡 API response: success = $success');
+          if (success) {
+            await appData.write(kKeyIsLoggedIn, true);
+            emit(state.copyWith(status: LoginStatus.success));
+
+            // Navigate after successful login
+            NavigationService.navigateToReplacement(Routes.buttomNavBar);
+          } else {
+            emit(state.copyWith(
+              status: LoginStatus.failure,
+              errorMessage: 'Login failed. Please check your credentials.',
+            ));
+          }
+        } catch (e) {
+          debugPrint('❌ Login error: $e');
+          customToastMessage("Login failed", e.toString());
           emit(state.copyWith(
             status: LoginStatus.failure,
-            errorMessage: 'Invalid email or password',
+            errorMessage: e.toString(),
           ));
         }
-      } catch (e) {
-        emit(state.copyWith(
-          status: LoginStatus.failure,
-          errorMessage: 'An error occurred.',
-        ));
+      } else {
+        debugPrint('⚠️ Form validation failed');
+        emit(state.copyWith(status: LoginStatus.initial));
       }
     });
   }

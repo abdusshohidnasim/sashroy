@@ -23,6 +23,7 @@ final class Routes {
   static const String signUpVerificationScreen = 'SignUpVerification';
   static const String homeScreen = 'HomeScreen';
    static const String buttomNavBar = 'ButtomNavBar';
+   static const String notificationScreen = 'NotificationScreen';
   
 }
 

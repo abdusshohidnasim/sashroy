@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sashroy/features/home/presentation/home.dart';
 import 'constants/app_constants.dart';
-import 'features/auth/presentation/login/login_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
-import 'helpers/post_login.dart';
-import 'networks/dio/dio.dart';
 import 'welcome_screen.dart';
 
 final class Loading extends StatefulWidget {
@@ -43,13 +41,13 @@ class _LoadingState extends State<Loading> {
     //AutoAppUpdateUtil.instance.checkAppUpdate();
     await setInitValue();
 
-    if (appData.read(kKeyIsLoggedIn)) {
-      String token = appData.read(kKeyAccessToken);
-      DioSingleton.instance.update(token);
-     await performPostLoginActions();
-    } else {
-      //  NotificationService().cancelAllNotifications();
-    }
+    // if (appData.read(kKeyIsLoggedIn)) {
+    //   String token = appData.read(kKeyAccessToken);
+    //   DioSingleton.instance.update(token);
+    //  await performPostLoginActions();
+    // } else {
+    //   //  NotificationService().cancelAllNotifications();
+    // }
 
     if (!mounted) return;
     setState(() {
@@ -73,10 +71,14 @@ class _LoadingState extends State<Loading> {
       return const WelcomeScreen();
     } else {
       return appData.read(kKeyIsLoggedIn)
-          ? const LoginScreen()
+          ? const HomeScreen()
+          // ? const LoginScreen()
           : appData.read(kKeyfirstTime)
-              ? const LoginScreen()
-              : const LoginScreen();
+             ? const HomeScreen()
+              : const HomeScreen();
+             
+              // ? const LoginScreen()
+              // : const LoginScreen();
     }
   }
 }
