@@ -19,10 +19,15 @@ class SaveScreen extends StatelessWidget {
         title: "Saved Items",
         height: 60.h,
         actionWidgets: [
-          Image.asset(
-            Assets.icons.notification.path,
-            height: 24.h,
-            width: 24.w,
+          InkWell(
+            onTap: () {
+              NavigationService.navigateTo(Routes.notificationScreen);
+            },
+            child: Image.asset(
+              Assets.icons.notification.path,
+              height: 24.h,
+              width: 24.w,
+            ),
           ),
           UIHelper.horizontalSpace(20.w),
         ],

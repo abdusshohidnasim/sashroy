@@ -5,10 +5,11 @@ import '../../../../gen/colors.gen.dart';
 import '../../../../helpers/ui_helpers.dart';
 
 class RatingSection extends StatelessWidget {
-  const RatingSection({super.key, this.rating, this.ratingviews,required this.ontab});
+  const RatingSection(
+      {super.key, this.rating, this.ratingviews, required this.ontab});
   final String? rating;
   final String? ratingviews;
-  final VoidCallback ontab;  
+  final VoidCallback ontab;
   @override
   Widget build(BuildContext context) {
     return Column(
