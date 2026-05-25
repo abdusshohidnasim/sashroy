@@ -1,50 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sashroy/features/card/presentation/card_screen.dart';
 import 'package:sashroy/features/home/presentation/home.dart';
+import 'package:sashroy/features/save/presentation/save_screen.dart';
 import '../gen/colors.gen.dart';
 import '../constants/text_font_style.dart';
 import 'gen/assets.gen.dart';
 
-class ButtomNavBar extends StatefulWidget {
-  const ButtomNavBar({super.key});
+class ButtomNavBar
+    extends StatefulWidget {
+  const ButtomNavBar(
+      {super.key});
 
   @override
-  State<ButtomNavBar> createState() => _ButtomNavBarState();
+  State<ButtomNavBar> createState() =>
+      _ButtomNavBarState();
 }
 
-class _ButtomNavBarState extends State<ButtomNavBar> {
-  int _selectedIndex = 0;
+class _ButtomNavBarState
+    extends State<ButtomNavBar> {
+  int _selectedIndex =
+      0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    Center(child: Text("Listings Screen")),
-    Center(child: Text("Add Screen")),
-    Center(child: Text("Messages Screen")),
-    Center(child: Text("Messages Screen")),
-    Center(child: Text("Profile Screen")),
+  final List<Widget>
+      _screens = [
+    const HomeScreen(),
+    const Center(child: Text("Listings Screen")),
+    const SaveScreen(),
+    const CardScreen(),
+    const Center(child: Text("Messages Screen")),
+    const Center(child: Text("Profile Screen")),
   ];
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(
+      int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget
+      build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       body: _screens[_selectedIndex],
       bottomNavigationBar: Container(
-        decoration:const BoxDecoration(
-          color: AppColors.cFFFFFF,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.c999999,
-              blurRadius: 1,
-            ),
-          ]
-        ),
+        decoration: const BoxDecoration(color: AppColors.cFFFFFF, boxShadow: [
+          BoxShadow(
+            color: AppColors.c999999,
+            blurRadius: 1,
+          ),
+        ]),
         height: 80.h,
         padding: EdgeInsets.only(bottom: 20.h),
         child: Stack(
@@ -63,8 +70,7 @@ class _ButtomNavBarState extends State<ButtomNavBar> {
                   _navItem(Assets.icons.home.path, "Home", 0),
                   _navItem(Assets.icons.search.path, "Search", 1),
                   _navItem(Assets.icons.hardButomnav.path, "Saved", 2),
-                  _navItem(
-                      Assets.icons.byCardButtomNav.path, "Cart", 3),
+                  _navItem(Assets.icons.byCardButtomNav.path, "Cart", 3),
                   _navItem(Assets.icons.user.path, "Account", 4),
                 ],
               ),
@@ -75,12 +81,17 @@ class _ButtomNavBarState extends State<ButtomNavBar> {
     );
   }
 
-  Widget _navItem(
-    String activeIcon,
-    String label,
+  Widget
+      _navItem(
+    String
+        activeIcon,
+    String
+        label,
     int index,
   ) {
-    bool isSelected = _selectedIndex == index;
+    bool
+        isSelected =
+        _selectedIndex == index;
 
     return GestureDetector(
       onTap: () => _onItemTapped(index),
@@ -88,16 +99,12 @@ class _ButtomNavBarState extends State<ButtomNavBar> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(activeIcon,
-              height: 24.h,
-              width: 24.w,
-              color: isSelected ? AppColors.c1A1A1A : AppColors.c999999),
+          Image.asset(activeIcon, height: 24.h, width: 24.w, color: isSelected ? AppColors.c1A1A1A : AppColors.c999999),
           SizedBox(height: 4.h),
           Text(
             label,
             style: TextFontStyle.textStyle12C808080GSM500.copyWith(
               color: isSelected ? AppColors.c1A1A1A : AppColors.c999999,
-        
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),

@@ -2,13 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:sashroy/features/auth/presentation/signup/signup_screen.dart';
 
 import '../buttom_nav_bar.dart';
+import '../features/address/presentation/address_selection_screen.dart';
 import '../features/auth/presentation/forgot_password_email/forgot_password_email_screen.dart';
 import '../features/auth/presentation/forgot_password_set/forgot_set_password_screen.dart';
 import '../features/auth/presentation/login/login_screen.dart';
 import '../features/auth/presentation/forgot_verification/forgot_verifecation_screen.dart';
 import '../features/auth/presentation/sign_up_email/sign_up_email_screen.dart';
 import '../features/auth/presentation/sign_up_verify_email/sign_up_verify_email_screen.dart';
+import '../features/check_out/presentations/check_out_screen.dart';
+import '../features/details/presentaion/details_screen.dart';
 import '../features/home/presentation/home.dart';
+import '../features/notification/presintation/notification_screen.dart';
+import '../features/save/presentation/save_screen.dart';
 
 final class Routes {
   static final Routes _routes = Routes._internal();
@@ -24,6 +29,10 @@ final class Routes {
   static const String homeScreen = 'HomeScreen';
    static const String buttomNavBar = 'ButtomNavBar';
    static const String notificationScreen = 'NotificationScreen';
+   static const String detailsScreen = 'DetailsScreen';
+   static const String saveScreen = 'SaveScreen';
+   static const String checkOutScreen = 'CheckOutScreen';
+   static const String addressSelectionScreen = 'AddressSelectionScreen';
   
 }
 
@@ -93,9 +102,46 @@ case Routes.homeScreen:
             : _FadedTransitionRoute(
                 widget: const ButtomNavBar(), settings: settings);
 
+                 case Routes.notificationScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const NotificationScreen())
+            : _FadedTransitionRoute(
+                widget: const NotificationScreen(), settings: settings);
+
+      case Routes.detailsScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const DetailsScreen())
+            : _FadedTransitionRoute(
+                widget: const DetailsScreen(), settings: settings);
 
 
-      // case Routes.otpScreen:
+                 case Routes.saveScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const SaveScreen())
+            : _FadedTransitionRoute(
+                widget: const SaveScreen(), settings: settings);
+
+
+                 case Routes.checkOutScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const CheckOutScreen())
+            : _FadedTransitionRoute(
+                widget: const CheckOutScreen(), settings: settings);
+
+                 case Routes.addressSelectionScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const AddressSelectionScreen())
+            : _FadedTransitionRoute(
+                widget: const AddressSelectionScreen(), settings: settings);
+
+
+
+
       //   final args = settings.arguments as Map;
       //   return defaultTargetPlatform == TargetPlatform.iOS
       //       ? CupertinoPageRoute(
