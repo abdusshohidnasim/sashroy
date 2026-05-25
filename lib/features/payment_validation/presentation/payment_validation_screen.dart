@@ -23,12 +23,12 @@ class PaymentValidationScreen extends StatelessWidget {
     return BlocProvider<PaymentBloc>(
       create: (_) => PaymentBloc(),
       child: BlocConsumer<PaymentBloc, PaymentState>(
-        listenWhen: (previous, current) =>
-            previous.status != current.status,
+        listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           if (state.status == PaymentValidationStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'Validation failed')),
+              SnackBar(
+                  content: Text(state.errorMessage ?? 'Validation failed')),
             );
           }
         },
@@ -38,7 +38,6 @@ class PaymentValidationScreen extends StatelessWidget {
             appBar: CustomAppBar(
               title: 'Payment Validation',
               height: 60.h,
-              
             ),
             body: SafeArea(
               child: Column(
@@ -100,14 +99,13 @@ class PaymentValidationScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
+                    padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 16.h),
                     child: CustomButton(
                       onTap: () {
                         paymentBloc.add(const PaymentValidationSubmitted());
                       },
                       btnName: 'Confirm',
                       height: 54.h,
-                      borderRadius: 30.r,
                       bgColor: AppColors.c1A1A1A,
                       isLoading:
                           state.status == PaymentValidationStatus.submitting,
