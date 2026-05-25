@@ -274,7 +274,7 @@ class _CheckOutScreenView extends StatelessWidget {
                                                                                     },
                                                                                     btnName: 'Add',
                                                                                     height: 50.h,
-                                                                                    borderRadius: 26.r,
+                                                                                  borderRadius: 25.r,
                                                                                     bgColor: AppColors.c1A1A1A,
                                                                                   ),
                                           ),
@@ -325,7 +325,8 @@ class _CheckOutScreenView extends StatelessWidget {
                                         },
                                         btnName: 'Add',
                                         height: 50.h,
-                                        borderRadius: 26.r,
+                                        borderRadius: 25.r,
+
                                         bgColor: AppColors.c1A1A1A,
                                       ),
                                     ),
@@ -351,7 +352,7 @@ class _CheckOutScreenView extends StatelessWidget {
                   ),
                   Padding(
                     padding:
-                        EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
+                        EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 16.h),
                     child: CustomButton(
                       onTap: () {
                         context
