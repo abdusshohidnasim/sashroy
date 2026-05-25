@@ -274,7 +274,7 @@ class _CheckOutScreenView extends StatelessWidget {
                                                                                     },
                                                                                     btnName: 'Add',
                                                                                     height: 50.h,
-                                                                                  
+                                                                                  borderRadius: 25.r,
                                                                                     bgColor: AppColors.c1A1A1A,
                                                                                   ),
                                           ),
@@ -325,7 +325,7 @@ class _CheckOutScreenView extends StatelessWidget {
                                         },
                                         btnName: 'Add',
                                         height: 50.h,
-                                     
+                                        borderRadius: 25.r,
 
                                         bgColor: AppColors.c1A1A1A,
                                       ),
@@ -364,7 +364,7 @@ class _CheckOutScreenView extends StatelessWidget {
                       },
                       btnName: 'Place Order',
                       height: 54.h,
-                      
+                      borderRadius: 30.r,
                       bgColor: AppColors.c1A1A1A,
                       isLoading:
                           checkoutState.status == CheckOutStatus.loading,

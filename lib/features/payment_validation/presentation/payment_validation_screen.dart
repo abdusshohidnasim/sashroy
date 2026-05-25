@@ -106,6 +106,7 @@ class PaymentValidationScreen extends StatelessWidget {
                       },
                       btnName: 'Confirm',
                       height: 54.h,
+                      borderRadius: 30.r,
                       bgColor: AppColors.c1A1A1A,
                       isLoading:
                           state.status == PaymentValidationStatus.submitting,
