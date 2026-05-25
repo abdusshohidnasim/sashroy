@@ -13,6 +13,7 @@ import '../features/check_out/presentations/check_out_screen.dart';
 import '../features/details/presentaion/details_screen.dart';
 import '../features/home/presentation/home.dart';
 import '../features/notification/presintation/notification_screen.dart';
+import '../features/payment_validation/presentation/payment_validation_screen.dart';
 import '../features/save/presentation/save_screen.dart';
 
 final class Routes {
@@ -33,6 +34,7 @@ final class Routes {
    static const String saveScreen = 'SaveScreen';
    static const String checkOutScreen = 'CheckOutScreen';
    static const String addressSelectionScreen = 'AddressSelectionScreen';
+   static const String paymentValidationScreen = 'PaymentValidationScreen';
   
 }
 
@@ -138,6 +140,13 @@ case Routes.homeScreen:
                 builder: (context) => const AddressSelectionScreen())
             : _FadedTransitionRoute(
                 widget: const AddressSelectionScreen(), settings: settings);
+
+                 case Routes.paymentValidationScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(
+                builder: (context) => const PaymentValidationScreen())
+            : _FadedTransitionRoute(
+                widget: const PaymentValidationScreen(), settings: settings);
 
 
 

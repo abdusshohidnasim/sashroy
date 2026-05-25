@@ -236,41 +236,53 @@ class _CheckOutScreenView extends StatelessWidget {
                                 if (isNarrow) {
                                   return Column(
                                     children: [
-                                      CustomFormField(
-                                        controller: promoController,
-                                        hintText: 'Enter promo code',
-                                        prefixIcon: Image.asset(
-                                          Assets.icons.discountCard.path,
-                                          height: 18.h,
-                                          width: 18.w,
-                                          color: AppColors.c808080,
-                                        ),
-                                        borderRadius: 26.r,
-                                        fillColor: AppColors.cFFFFFF,
-                                        enableBorderColor: AppColors.cE6E6E6,
-                                        focusBorderColor: AppColors.cE6E6E6,
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 4,
+                                            child: CustomFormField(
+                                              controller: promoController,
+                                              hintText: 'Enter promo code',
+                                              prefixIcon: Image.asset(
+                                                Assets.icons.discountCard.path,
+                                                height: 18.h,
+                                                width: 18.w,
+                                                color: AppColors.c808080,
+                                              ),
+                                              borderRadius: 26.r,
+                                              fillColor: AppColors.cFFFFFF,
+                                              enableBorderColor: AppColors.cE6E6E6,
+                                              focusBorderColor: AppColors.cE6E6E6,
+                                            ),
+                                          ),
+                                            UIHelper.horizontalSpace(10.h),
+                                          Expanded(
+                                            flex: 2,
+                                            child: CustomButton(
+                                                                                    onTap: () {
+                                            if (promoController
+                                                .text.isNotEmpty) {
+                                              context
+                                                  .read<CheckOutBloc>()
+                                                  .add(
+                                                    ApplyPromoCodeEvent(
+                                                      promoCode:
+                                                          promoController.text,
+                                                    ),
+                                                  );
+                                            }
+                                                                                    },
+                                                                                    btnName: 'Add',
+                                                                                    height: 50.h,
+                                                                                    borderRadius: 26.r,
+                                                                                    bgColor: AppColors.c1A1A1A,
+                                                                                  ),
+                                          ),
+                                        ],
                                       ),
-                            UIHelper.verticalSpace(10.h),
+                          
        
-                                      CustomButton(
-                                        onTap: () {
-                                          if (promoController
-                                              .text.isNotEmpty) {
-                                            context
-                                                .read<CheckOutBloc>()
-                                                .add(
-                                                  ApplyPromoCodeEvent(
-                                                    promoCode:
-                                                        promoController.text,
-                                                  ),
-                                                );
-                                          }
-                                        },
-                                        btnName: 'Add',
-                                        height: 50.h,
-                                        borderRadius: 26.r,
-                                        bgColor: AppColors.c1A1A1A,
-                                      ),
+                                      
                                     ],
                                   );
                                 }
@@ -345,6 +357,9 @@ class _CheckOutScreenView extends StatelessWidget {
                         context
                             .read<CheckOutBloc>()
                             .add(PlaceOrderEvent());
+                        NavigationService.navigateTo(
+                          Routes.paymentValidationScreen,
+                        );
                       },
                       btnName: 'Place Order',
                       height: 54.h,
