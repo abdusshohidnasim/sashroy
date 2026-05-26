@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants/text_font_style.dart';
 import '../gen/colors.gen.dart';
 
-final class CustomFormField extends StatelessWidget {
+final class CustomFormField extends StatefulWidget {
   final String? hintText;
   final double? hintFontSize;
   final String? labelText;
@@ -39,6 +39,15 @@ final class CustomFormField extends StatelessWidget {
   final Color? fillColor;
   final TextStyle? hintsTextStyle;
   final AutovalidateMode? autovalidateMode;
+  final bool isDatePicker;
+  final VoidCallback? onDateTap;
+  final bool isDropdown;
+  final List<String>? dropdownItems;
+  final Function(String?)? onDropdownChanged;
+  final String? selectedDropdownValue;
+  final bool isPhoneField;
+  final String? countryCode;
+  final VoidCallback? onCountryCodeTap;
 
   const CustomFormField({
     super.key,
@@ -72,82 +81,346 @@ final class CustomFormField extends StatelessWidget {
     this.focusBorderColor,
     this.fillColor,
     this.hintsTextStyle,
-    this.autovalidateMode
+    this.autovalidateMode,
+    this.isDatePicker = false,
+    this.onDateTap,
+    this.isDropdown = false,
+    this.dropdownItems,
+    this.onDropdownChanged,
+    this.selectedDropdownValue,
+    this.isPhoneField = false,
+    this.countryCode,
+    this.onCountryCodeTap,
   });
 
   @override
+  State<CustomFormField> createState() => _CustomFormFieldState();
+}
+
+class _CustomFormFieldState extends State<CustomFormField> {
+  late bool _isObscure;
+
+  @override
+  void initState() {
+    _isObscure = widget.isObsecure;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (widget.isDropdown) {
+      return _buildDropdownField();
+    }
+
+    if (widget.isDatePicker) {
+      return _buildDatePickerField();
+    }
+
+    if (widget.isPhoneField) {
+      return _buildPhoneField();
+    }
+
+    return _buildDefaultField();
+  }
+
+  Widget _buildDefaultField() {
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
         child: TextFormField(
-          readOnly: isRead,
-          cursorHeight: cursorHeight ?? 20.h,
+          readOnly: widget.isRead,
+          cursorHeight: widget.cursorHeight ?? 20.h,
           cursorColor: AppColors.c1A1A1A,
-          focusNode: focusNode,
-          obscureText: isPass ? isObsecure : false,
-          textInputAction: textInputAction,
-          autovalidateMode: validation!
+          focusNode: widget.focusNode,
+          obscureText: widget.isPass ? _isObscure : false,
+          textInputAction: widget.textInputAction,
+          autovalidateMode: widget.validation!
               ? AutovalidateMode.always
               : AutovalidateMode.onUserInteraction,
-          validator: validator,
-          maxLines: maxline ?? 1,
-          minLines: minline ?? 1,
-          controller: controller,
-          onFieldSubmitted: onFieldSubmitted,
-          onChanged: onChanged,
-          inputFormatters: inputFormatters,
-          enabled: isEnabled,
+          validator: widget.validator,
+          maxLines: widget.maxline ?? 1,
+          minLines: widget.minline ?? 1,
+          controller: widget.controller,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          onChanged: widget.onChanged,
+          inputFormatters: widget.inputFormatters,
+          enabled: widget.isEnabled,
           decoration: InputDecoration(
             filled: true,
-            fillColor: fillColor,
+            fillColor: widget.fillColor,
             isDense: true,
-            suffixIcon: suffixIcon,
-            prefixIcon: prefixIcon != null
-                ? Padding(padding: EdgeInsets.all(12.sp), child: prefixIcon)
+            suffixIcon: widget.isPass
+                ? _buildPasswordToggle()
+                : widget.suffixIcon,
+            prefixIcon: widget.prefixIcon != null
+                ? Padding(padding: EdgeInsets.all(12.sp), child: widget.prefixIcon)
                 : null,
-            hintText: hintText,
-            hintStyle: hintsTextStyle ??
+            hintText: widget.hintText,
+            hintStyle: widget.hintsTextStyle ??
                 TextFontStyle.textStyle16C808080GSR400
                     .copyWith(color: AppColors.c999999),
-            labelText: labelText,
+            labelText: widget.labelText,
+            labelStyle: widget.labelStyle,
             errorStyle: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: Colors.red),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
               borderSide: BorderSide(color: Colors.red, width: 2.w),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
               borderSide: BorderSide(
-                color: focusBorderColor ?? AppColors.cE6E6E6,
+                color: widget.focusBorderColor ?? AppColors.cE6E6E6,
                 width: 1.w,
               ),
             ),
             disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
               borderSide: BorderSide(
-                color: disableColor ?? AppColors.cE6E6E6,
+                color: widget.disableColor ?? AppColors.cE6E6E6,
                 width: 1.w,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
               borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
               borderSide: BorderSide(
-                color: enableBorderColor ??
+                color: widget.enableBorderColor ??
                     AppColors.cFFFFFF.withValues(alpha: 0.1),
                 width: 1.w,
               ),
             ),
           ),
-          style: style ?? TextFontStyle.textStyle16C1A1A1ADGSM500,
-          keyboardType: inputType,
+          style: widget.style ?? TextFontStyle.textStyle16C1A1A1ADGSM500,
+          keyboardType: widget.inputType,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordToggle() {
+    return GestureDetector(
+      onTap: () => setState(() => _isObscure = !_isObscure),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
+        child: Icon(
+          _isObscure ? Icons.visibility_off : Icons.visibility,
+          color: AppColors.c808080,
+          size: 20.sp,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDatePickerField() {
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: TextFormField(
+          readOnly: true,
+          controller: widget.controller,
+          validator: widget.validator,
+          onTap: widget.onDateTap,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: widget.fillColor,
+            isDense: true,
+            suffixIcon: Padding(
+              padding: EdgeInsets.only(right: 12.w),
+              child: Icon(
+                Icons.calendar_today_outlined,
+                color: AppColors.c808080,
+                size: 20.sp,
+              ),
+            ),
+            hintText: widget.hintText,
+            hintStyle: widget.hintsTextStyle ??
+                TextFontStyle.textStyle16C808080GSR400
+                    .copyWith(color: AppColors.c999999),
+            labelText: widget.labelText,
+            labelStyle: widget.labelStyle,
+            errorStyle: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.red),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
+              borderSide: BorderSide(
+                color: widget.focusBorderColor ?? AppColors.cE6E6E6,
+                width: 1.w,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
+              borderSide: BorderSide(
+                color: widget.enableBorderColor ??
+                    AppColors.cFFFFFF.withValues(alpha: 0.1),
+                width: 1.w,
+              ),
+            ),
+          ),
+          style: widget.style ?? TextFontStyle.textStyle16C1A1A1ADGSM500,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownField() {
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
+            border: Border.all(
+              color: widget.enableBorderColor ??
+                  AppColors.cFFFFFF.withValues(alpha: 0.1),
+              width: 1.w,
+            ),
+          ),
+          child: DropdownButtonFormField<String>(
+            initialValue: widget.selectedDropdownValue,
+            onChanged: widget.onDropdownChanged,
+            validator: widget.validator,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: widget.fillColor,
+              isDense: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
+                borderSide: BorderSide(
+                  color: widget.focusBorderColor ?? AppColors.cE6E6E6,
+                  width: 1.w,
+                ),
+              ),
+              hintText: widget.hintText,
+              hintStyle: widget.hintsTextStyle ??
+                  TextFontStyle.textStyle16C808080GSR400
+                      .copyWith(color: AppColors.c999999),
+              labelText: widget.labelText,
+              labelStyle: widget.labelStyle,
+            ),
+            items: (widget.dropdownItems ?? [])
+                .map((item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: widget.style ??
+                            TextFontStyle.textStyle16C1A1A1ADGSM500,
+                      ),
+                    ))
+                .toList(),
+            style: widget.style ?? TextFontStyle.textStyle16C1A1A1ADGSM500,
+            icon: Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: AppColors.c808080,
+              size: 24.sp,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhoneField() {
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: GestureDetector(
+                onTap: widget.onCountryCodeTap,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
+                    border: Border.all(
+                      color: widget.enableBorderColor ??
+                          AppColors.cFFFFFF.withValues(alpha: 0.1),
+                      width: 1.w,
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.countryCode ?? '🇺🇸',
+                        style: TextStyle(fontSize: 20.sp),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.c808080,
+                        size: 20.sp,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Expanded(
+              flex: 4,
+              child: TextFormField(
+                readOnly: widget.isRead,
+                controller: widget.controller,
+                keyboardType: TextInputType.phone,
+                inputFormatters: widget.inputFormatters ??
+                    [FilteringTextInputFormatter.digitsOnly],
+                validator: widget.validator,
+                textInputAction: widget.textInputAction,
+                onFieldSubmitted: widget.onFieldSubmitted,
+                onChanged: widget.onChanged,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: widget.fillColor,
+                  isDense: true,
+                  hintText: widget.hintText ?? 'Phone number',
+                  hintStyle: widget.hintsTextStyle ??
+                      TextFontStyle.textStyle16C808080GSR400
+                          .copyWith(color: AppColors.c999999),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                  border: OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.circular(widget.borderRadius ?? 8.r),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.circular(widget.borderRadius ?? 8.r),
+                    borderSide: BorderSide(
+                      color: widget.enableBorderColor ??
+                          AppColors.cFFFFFF.withValues(alpha: 0.1),
+                      width: 1.w,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.circular(widget.borderRadius ?? 8.r),
+                    borderSide: BorderSide(
+                      color: widget.focusBorderColor ?? AppColors.cE6E6E6,
+                      width: 1.w,
+                    ),
+                  ),
+                ),
+                style: widget.style ?? TextFontStyle.textStyle16C1A1A1ADGSM500,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sashroy/features/auth/presentation/signup/signup_screen.dart';
+import 'package:sashroy/features/my_orders/presentations/my_orders_top_bar.dart';
 
 import '../buttom_nav_bar.dart';
+import '../features/account/presentation/account_screen.dart';
 import '../features/address/presentation/address_selection_screen.dart';
 import '../features/auth/presentation/forgot_password_email/forgot_password_email_screen.dart';
 import '../features/auth/presentation/forgot_password_set/forgot_set_password_screen.dart';
@@ -12,6 +14,7 @@ import '../features/auth/presentation/sign_up_verify_email/sign_up_verify_email_
 import '../features/check_out/presentations/check_out_screen.dart';
 import '../features/details/presentaion/details_screen.dart';
 import '../features/home/presentation/home.dart';
+import '../features/my_details/presentations/my_details_screen.dart';
 import '../features/notification/presintation/notification_screen.dart';
 import '../features/payment_validation/presentation/payment_validation_screen.dart';
 import '../features/save/presentation/save_screen.dart';
@@ -28,14 +31,16 @@ final class Routes {
   static const String signUpEmailScreen = 'SignUpEmail';
   static const String signUpVerificationScreen = 'SignUpVerification';
   static const String homeScreen = 'HomeScreen';
-   static const String buttomNavBar = 'ButtomNavBar';
-   static const String notificationScreen = 'NotificationScreen';
-   static const String detailsScreen = 'DetailsScreen';
-   static const String saveScreen = 'SaveScreen';
-   static const String checkOutScreen = 'CheckOutScreen';
-   static const String addressSelectionScreen = 'AddressSelectionScreen';
-   static const String paymentValidationScreen = 'PaymentValidationScreen';
-  
+  static const String buttomNavBar = 'ButtomNavBar';
+  static const String notificationScreen = 'NotificationScreen';
+  static const String detailsScreen = 'DetailsScreen';
+  static const String saveScreen = 'SaveScreen';
+  static const String checkOutScreen = 'CheckOutScreen';
+  static const String addressSelectionScreen = 'AddressSelectionScreen';
+  static const String paymentValidationScreen = 'PaymentValidationScreen';
+  static const String accountScreen = 'Account';
+  static const String myOrdersTopBar = 'MyOrdersTopBar';
+  static const String myDetailsScreen = 'MyDetails';
 }
 
 final class RouteGenerator {
@@ -91,20 +96,18 @@ final class RouteGenerator {
             : _FadedTransitionRoute(
                 widget: const SignUpVerifyEmailScreen(), settings: settings);
 
-case Routes.homeScreen:
+      case Routes.homeScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoPageRoute(
-                builder: (context) => const HomeScreen())
+            ? CupertinoPageRoute(builder: (context) => const HomeScreen())
             : _FadedTransitionRoute(
                 widget: const HomeScreen(), settings: settings);
-        case Routes.buttomNavBar:
+      case Routes.buttomNavBar:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoPageRoute(
-                builder: (context) => const ButtomNavBar())
+            ? CupertinoPageRoute(builder: (context) => const ButtomNavBar())
             : _FadedTransitionRoute(
                 widget: const ButtomNavBar(), settings: settings);
 
-                 case Routes.notificationScreen:
+      case Routes.notificationScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
             ? CupertinoPageRoute(
                 builder: (context) => const NotificationScreen())
@@ -113,43 +116,56 @@ case Routes.homeScreen:
 
       case Routes.detailsScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoPageRoute(
-                builder: (context) => const DetailsScreen())
+            ? CupertinoPageRoute(builder: (context) => const DetailsScreen())
             : _FadedTransitionRoute(
                 widget: const DetailsScreen(), settings: settings);
 
-
-                 case Routes.saveScreen:
+      case Routes.saveScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoPageRoute(
-                builder: (context) => const SaveScreen())
+            ? CupertinoPageRoute(builder: (context) => const SaveScreen())
             : _FadedTransitionRoute(
                 widget: const SaveScreen(), settings: settings);
 
-
-                 case Routes.checkOutScreen:
+      case Routes.checkOutScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoPageRoute(
-                builder: (context) => const CheckOutScreen())
+            ? CupertinoPageRoute(builder: (context) => const CheckOutScreen())
             : _FadedTransitionRoute(
                 widget: const CheckOutScreen(), settings: settings);
 
-                 case Routes.addressSelectionScreen:
+      case Routes.addressSelectionScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
             ? CupertinoPageRoute(
                 builder: (context) => const AddressSelectionScreen())
             : _FadedTransitionRoute(
                 widget: const AddressSelectionScreen(), settings: settings);
 
-                 case Routes.paymentValidationScreen:
+      case Routes.paymentValidationScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
             ? CupertinoPageRoute(
                 builder: (context) => const PaymentValidationScreen())
             : _FadedTransitionRoute(
                 widget: const PaymentValidationScreen(), settings: settings);
 
+      case Routes.accountScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(builder: (context) => const AccountScreen())
+            : _FadedTransitionRoute(
+                widget: const AccountScreen(), settings: settings);
 
 
+
+      case Routes.myOrdersTopBar:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(builder: (context) => const MyOrdersTopBar())
+            : _FadedTransitionRoute(
+                widget: const MyOrdersTopBar(), settings: settings);
+
+         
+      case Routes.myDetailsScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+            ? CupertinoPageRoute(builder: (context) => MyDetailsScreen())
+            : _FadedTransitionRoute(
+                widget: MyDetailsScreen(), settings: settings);
 
       //   final args = settings.arguments as Map;
       //   return defaultTargetPlatform == TargetPlatform.iOS
