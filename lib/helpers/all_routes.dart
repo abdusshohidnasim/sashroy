@@ -14,6 +14,7 @@ import '../features/auth/presentation/sign_up_verify_email/sign_up_verify_email_
 import '../features/check_out/presentations/check_out_screen.dart';
 import '../features/details/presentaion/details_screen.dart';
 import '../features/home/presentation/home.dart';
+import '../features/my_details/presentations/my_details_screen.dart';
 import '../features/notification/presintation/notification_screen.dart';
 import '../features/payment_validation/presentation/payment_validation_screen.dart';
 import '../features/save/presentation/save_screen.dart';
@@ -162,9 +163,9 @@ final class RouteGenerator {
          
       case Routes.myDetailsScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoPageRoute(builder: (context) => const MyOrdersTopBar())
+            ? CupertinoPageRoute(builder: (context) => const MyDetailsScreen())
             : _FadedTransitionRoute(
-                widget: const MyOrdersTopBar(), settings: settings);
+                widget: const MyDetailsScreen(), settings: settings);
 
       //   final args = settings.arguments as Map;
       //   return defaultTargetPlatform == TargetPlatform.iOS

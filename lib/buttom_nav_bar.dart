@@ -5,6 +5,7 @@ import 'package:sashroy/features/home/presentation/home.dart';
 import 'package:sashroy/features/save/presentation/save_screen.dart';
 import '../gen/colors.gen.dart';
 import '../constants/text_font_style.dart';
+import 'features/account/presentation/account_screen.dart';
 import 'gen/assets.gen.dart';
 
 class ButtomNavBar
@@ -28,8 +29,8 @@ class _ButtomNavBarState
     const Center(child: Text("Listings Screen")),
     const SaveScreen(),
     const CardScreen(),
-    const Center(child: Text("Messages Screen")),
-    const Center(child: Text("Profile Screen")),
+    const AccountScreen(),
+    const AccountScreen(),
   ];
 
   void _onItemTapped(
