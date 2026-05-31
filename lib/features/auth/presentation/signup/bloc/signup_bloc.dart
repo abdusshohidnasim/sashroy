@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sashroy/features/auth/presentation/signup/bloc/signup_event.dart';
 import 'package:sashroy/features/auth/presentation/signup/bloc/signup_state.dart';
+import 'package:sashroy/networks/api_acess.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   final nameController = TextEditingController();
@@ -24,22 +25,26 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         errorMessage: '',
       ));
       try {
-        await Future.delayed(const Duration(seconds: 2));
-        if (event.email == 'user@example.com' && event.password == 'password') {
-          emit(state.copywith(
-            isLoading: false,
-            isSuccess: true,
-            isFailure: false,
-            errorMessage: '',
-          ));
-        } else {
-          emit(state.copywith(
-            isLoading: false,
-            isFailure: true,
-            isSuccess: false,
-            errorMessage: 'Invalid email or password',
-          ));
-        }
+      final bool sucess = await postSignupRxObj.postsignup(email: event.email, password: event.password);
+      if(sucess)
+      {
+        emit(state.copywith(
+          isLoading: false,
+          isSuccess: true,
+          isFailure: false,
+          errorMessage: '',
+        ));
+      }
+      else{
+        emit(state.copywith(
+          isLoading: false,
+          isSuccess: false,
+          isFailure: true,
+          errorMessage: 'Signup failed. Please try again.',
+        ));
+        emailController.clear();
+        passwordController.clear();
+      }
       } catch (e) {
         emit(state.copywith(
           isLoading: false,

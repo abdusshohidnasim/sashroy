@@ -12,7 +12,6 @@ import 'package:sashroy/gen/colors.gen.dart';
 import 'package:sashroy/helpers/all_routes.dart';
 import 'package:sashroy/helpers/navigation_service.dart';
 import 'package:sashroy/helpers/ui_helpers.dart';
-
 import 'bloc/signup_bloc.dart';
 import 'bloc/signup_event.dart';
 import 'bloc/signup_state.dart';

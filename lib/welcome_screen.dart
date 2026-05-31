@@ -43,12 +43,12 @@ final class _WelcomeScreenState extends State<WelcomeScreen>
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.c000000,
-          image: DecorationImage(
-            image: AssetImage(Assets.images.splash.path),
-            fit: BoxFit.cover,
-          ),
+        decoration: const BoxDecoration(
+          color: AppColors.cFFFFFF,
+          // image: DecorationImage(
+          //   image: AssetImage(Assets.images.splash.path),
+          //   fit: BoxFit.cover,
+          // ),
         ),
         //decoration: const BoxDecoration(color: AppColors.allPrimaryColor),
         child: Center(

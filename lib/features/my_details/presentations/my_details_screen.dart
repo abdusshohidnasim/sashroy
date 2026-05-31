@@ -24,6 +24,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _dateController = TextEditingController();
+  final _genderController = TextEditingController();
   final _phoneController = TextEditingController();
 
   // String _selectedGender = 'Male';
@@ -35,6 +36,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
     _nameController.text = 'Cody Fisher';
     _emailController.text = 'cody.fisher45@example';
     _dateController.text = '12/07/1990';
+    _genderController.text = 'Male';
     _phoneController.text = '+1 234 453 231 506';
     super.initState();
   }
@@ -44,6 +46,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _dateController.dispose();
+    _genderController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
@@ -126,27 +129,20 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                // CustomFormField(
-                //   controller: _dateController,
-                //   hintText: 'DD/MM/YYYY',
-                //   isDatePicker: true,
-                //   borderRadius: 12.r,
-                //   enableBorderColor: AppColors.cE6E6E6,
-                //   focusBorderColor: AppColors.cE6E6E6,
-                //   fillColor: AppColors.cFFFFFF,
-                //   onDateTap: () async {
-                //     final date = await showDatePicker(
-                //       context: context,
-                //       initialDate: DateTime(2000),
-                //       firstDate: DateTime(1950),
-                //       lastDate: DateTime.now(),
-                //     );
-                //     if (date != null) {
-                //       _dateController.text =
-                //           '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
-                //     }
-                //   },
-                // ),
+                CustomFormField(
+                  controller: _dateController,
+                  hintText: 'DD/MM/YYYY',
+                  isRead: true,
+                  borderRadius: 12.r,
+                  enableBorderColor: AppColors.cE6E6E6,
+                  focusBorderColor: AppColors.cE6E6E6,
+                  fillColor: AppColors.cFFFFFF,
+                  suffixIcon: Icon(
+                    Icons.calendar_today_outlined,
+                    color: AppColors.c999999,
+                    size: 20.sp,
+                  ),
+                ),
                 UIHelper.verticalSpace(16.h),
 
                 Text(
@@ -154,21 +150,19 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                // CustomFormField(
-                //   isDropdown: true,
-                //   dropdownItems: _genderOptions,
-                //   selectedDropdownValue: _selectedGender,
-                //   onDropdownChanged: (value) {
-                //     if (value == null) {
-                //       return;
-                //     }
-                //     setState(() => _selectedGender = value);
-                //   },
-                //   borderRadius: 12.r,
-                //   enableBorderColor: AppColors.cE6E6E6,
-                //   focusBorderColor: AppColors.cE6E6E6,
-                //   fillColor: AppColors.cFFFFFF,
-                // ),
+                CustomFormField(
+                  controller: _genderController,
+                  isRead: true,
+                  borderRadius: 12.r,
+                  enableBorderColor: AppColors.cE6E6E6,
+                  focusBorderColor: AppColors.cE6E6E6,
+                  fillColor: AppColors.cFFFFFF,
+                  suffixIcon: Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: AppColors.c1A1A1A,
+                    size: 24.sp,
+                  ),
+                ),
                 UIHelper.verticalSpace(16.h),
 
                 Text(
@@ -189,7 +183,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                 //     FilteringTextInputFormatter.allow(RegExp(r'[0-9 +]')),
                 //   ],
                 //   onCountryCodeTap: () {
-  
+
                 //   },
                 //   validator: (value) {
                 //     if (value == null || value.isEmpty) {
@@ -198,6 +192,39 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                 //     return null;
                 //   },
                 // ),
+                CustomFormField(
+                  controller: _phoneController,
+                  hintText: 'Phone number',
+                  inputType: TextInputType.phone,
+                  borderRadius: 12.r,
+                  enableBorderColor: AppColors.cE6E6E6,
+                  focusBorderColor: AppColors.cE6E6E6,
+                  fillColor: AppColors.cFFFFFF,
+                  prefixIcon: SizedBox(
+                    width: 54.w,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '🇺🇸',
+                          style: TextFontStyle.textStyle16C1A1A1ADGSM500,
+                        ),
+                        UIHelper.horizontalSpace(6.w),
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: AppColors.c1A1A1A,
+                          size: 18.sp,
+                        ),
+                      ],
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your phone number';
+                    }
+                    return null;
+                  },
+                ),
                 UIHelper.verticalSpace(24.h),
 
                 CustomButton(
