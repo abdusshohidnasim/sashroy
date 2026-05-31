@@ -8,6 +8,7 @@ abstract class SignupEvent extends Equatable {
 class SignupButtompressedEvent extends SignupEvent {
   final String email;
   final String password;
+ 
 
   SignupButtompressedEvent({
     required this.email,
