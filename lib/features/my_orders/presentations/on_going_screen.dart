@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sashroy/features/my_orders/presentations/widgets/order_item_card.dart';
 
 import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
 import '../../../helpers/ui_helpers.dart';
-import 'widgets/order_item_card.dart';
+
 
 class OnGoingScreen extends StatelessWidget {
   const OnGoingScreen({super.key});
@@ -13,7 +14,7 @@ class OnGoingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_ongoingOrders.isEmpty) {
-      return _EmptyOrdersState(
+      return const _EmptyOrdersState(
         title: 'No Ongoing Orders!',
         subtitle: 'You don’t have any ongoing orders\nat this time.',
       );

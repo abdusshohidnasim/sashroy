@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sashroy/common_widgets/custom_scaffold.dart';
-
 import '../../../common_widgets/custom_appbar.dart';
 import '../../../common_widgets/custom_button.dart';
 import '../../../common_widgets/custom_textform_field.dart';
@@ -28,9 +26,9 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
   final _dateController = TextEditingController();
   final _phoneController = TextEditingController();
 
-  String _selectedGender = 'Male';
-  final List<String> _genderOptions = ['Male', 'Female', 'Other'];
-  final String _selectedCountryCode = '🇺🇸';
+  // String _selectedGender = 'Male';
+  // final List<String> _genderOptions = ['Male', 'Female', 'Other'];
+  // final String _selectedCountryCode = '🇺🇸';
 
   @override
   void initState() {
@@ -128,27 +126,27 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                CustomFormField(
-                  controller: _dateController,
-                  hintText: 'DD/MM/YYYY',
-                  isDatePicker: true,
-                  borderRadius: 12.r,
-                  enableBorderColor: AppColors.cE6E6E6,
-                  focusBorderColor: AppColors.cE6E6E6,
-                  fillColor: AppColors.cFFFFFF,
-                  onDateTap: () async {
-                    final date = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime(2000),
-                      firstDate: DateTime(1950),
-                      lastDate: DateTime.now(),
-                    );
-                    if (date != null) {
-                      _dateController.text =
-                          '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
-                    }
-                  },
-                ),
+                // CustomFormField(
+                //   controller: _dateController,
+                //   hintText: 'DD/MM/YYYY',
+                //   isDatePicker: true,
+                //   borderRadius: 12.r,
+                //   enableBorderColor: AppColors.cE6E6E6,
+                //   focusBorderColor: AppColors.cE6E6E6,
+                //   fillColor: AppColors.cFFFFFF,
+                //   onDateTap: () async {
+                //     final date = await showDatePicker(
+                //       context: context,
+                //       initialDate: DateTime(2000),
+                //       firstDate: DateTime(1950),
+                //       lastDate: DateTime.now(),
+                //     );
+                //     if (date != null) {
+                //       _dateController.text =
+                //           '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+                //     }
+                //   },
+                // ),
                 UIHelper.verticalSpace(16.h),
 
                 Text(
@@ -156,21 +154,21 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                CustomFormField(
-                  isDropdown: true,
-                  dropdownItems: _genderOptions,
-                  selectedDropdownValue: _selectedGender,
-                  onDropdownChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() => _selectedGender = value);
-                  },
-                  borderRadius: 12.r,
-                  enableBorderColor: AppColors.cE6E6E6,
-                  focusBorderColor: AppColors.cE6E6E6,
-                  fillColor: AppColors.cFFFFFF,
-                ),
+                // CustomFormField(
+                //   isDropdown: true,
+                //   dropdownItems: _genderOptions,
+                //   selectedDropdownValue: _selectedGender,
+                //   onDropdownChanged: (value) {
+                //     if (value == null) {
+                //       return;
+                //     }
+                //     setState(() => _selectedGender = value);
+                //   },
+                //   borderRadius: 12.r,
+                //   enableBorderColor: AppColors.cE6E6E6,
+                //   focusBorderColor: AppColors.cE6E6E6,
+                //   fillColor: AppColors.cFFFFFF,
+                // ),
                 UIHelper.verticalSpace(16.h),
 
                 Text(
@@ -178,28 +176,28 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                CustomFormField(
-                  controller: _phoneController,
-                  isPhoneField: true,
-                  countryCode: _selectedCountryCode,
-                  hintText: 'Phone number',
-                  borderRadius: 12.r,
-                  enableBorderColor: AppColors.cE6E6E6,
-                  focusBorderColor: AppColors.cE6E6E6,
-                  fillColor: AppColors.cFFFFFF,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9 +]')),
-                  ],
-                  onCountryCodeTap: () {
+                // CustomFormField(
+                //   controller: _phoneController,
+                //   isPhoneField: true,
+                //   countryCode: _selectedCountryCode,
+                //   hintText: 'Phone number',
+                //   borderRadius: 12.r,
+                //   enableBorderColor: AppColors.cE6E6E6,
+                //   focusBorderColor: AppColors.cE6E6E6,
+                //   fillColor: AppColors.cFFFFFF,
+                //   inputFormatters: [
+                //     FilteringTextInputFormatter.allow(RegExp(r'[0-9 +]')),
+                //   ],
+                //   onCountryCodeTap: () {
   
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    return null;
-                  },
-                ),
+                //   },
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please enter your phone number';
+                //     }
+                //     return null;
+                //   },
+                // ),
                 UIHelper.verticalSpace(24.h),
 
                 CustomButton(

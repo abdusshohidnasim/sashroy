@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sashroy/common_widgets/custom_scaffold.dart';
+import 'package:sashroy/constants/text_font_style.dart';
 
 import '../../../common_widgets/custom_appbar.dart';
 import '../../../gen/assets.gen.dart';
@@ -63,9 +64,9 @@ class MyOrdersTopBar extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
+          const  Expanded(
               child: TabBarView(
-                children: const [
+                children:  [
                   OnGoingScreen(),
                   CompletedScreen(),
                 ],
