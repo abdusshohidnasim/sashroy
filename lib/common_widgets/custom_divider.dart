@@ -4,13 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../gen/colors.gen.dart';
 
 class CustomDivider extends StatelessWidget {
-  const CustomDivider({super.key});
+  final double? thickness;
+  final Color? colors;
+
+  const CustomDivider({super.key, this.thickness, this.colors});
 
   @override
   Widget build(BuildContext context) {
     return Divider(
-      color: AppColors.cE6E6E6,
-      thickness: 1.h,
+      color: colors?? AppColors.cE6E6E6,
+      thickness: thickness?? 1.h,
     );
   }
 }
