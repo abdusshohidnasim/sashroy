@@ -163,9 +163,9 @@ final class RouteGenerator {
          
       case Routes.myDetailsScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? CupertinoPageRoute(builder: (context) => const MyDetailsScreen())
+          ? CupertinoPageRoute(builder: (context) => MyDetailsScreen())
             : _FadedTransitionRoute(
-                widget: const MyDetailsScreen(), settings: settings);
+            widget: MyDetailsScreen(), settings: settings);
 
       //   final args = settings.arguments as Map;
       //   return defaultTargetPlatform == TargetPlatform.iOS
