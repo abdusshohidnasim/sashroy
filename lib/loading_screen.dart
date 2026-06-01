@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'buttom_nav_bar.dart';
 import 'constants/app_constants.dart';
 import 'features/auth/presentation/login/login_screen.dart';
 import 'helpers/di.dart';
@@ -74,11 +75,11 @@ class _LoadingState extends State<Loading> {
         //  ? const ButtomNavBar()
         ? const LoginScreen()
           : appData.read(kKeyfirstTime)
-            //  ? const ButtomNavBar()
-            //   : const ButtomNavBar();
+             ? const ButtomNavBar()
+              : const ButtomNavBar();
              
-              ? const LoginScreen()
-              : const LoginScreen();
+              // ? const LoginScreen()
+              // : const LoginScreen();
     }
   }
 }

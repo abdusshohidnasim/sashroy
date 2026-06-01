@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sashroy/common_widgets/custom_scaffold.dart';
 import '../../../common_widgets/custom_appbar.dart';
@@ -10,50 +11,24 @@ import '../../../gen/colors.gen.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 import '../../../helpers/ui_helpers.dart';
+import 'bloc/mydetails_bloc.dart';
+import 'bloc/mydetails_event.dart';
+import 'bloc/mydetails_state.dart';
 
-class MyDetailsScreen extends StatefulWidget {
-  const MyDetailsScreen({super.key});
+class MyDetailsScreen extends StatelessWidget {
+  MyDetailsScreen({super.key});
 
-  @override
-  State<MyDetailsScreen> createState() => _MyDetailsScreenState();
-}
-
-class _MyDetailsScreenState extends State<MyDetailsScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _dateController = TextEditingController();
-  final _genderController = TextEditingController();
-  final _phoneController = TextEditingController();
-
-  // String _selectedGender = 'Male';
-  // final List<String> _genderOptions = ['Male', 'Female', 'Other'];
-  // final String _selectedCountryCode = '🇺🇸';
-
-  @override
-  void initState() {
-    _nameController.text = 'Cody Fisher';
-    _emailController.text = 'cody.fisher45@example';
-    _dateController.text = '12/07/1990';
-    _genderController.text = 'Male';
-    _phoneController.text = '+1 234 453 231 506';
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _dateController.dispose();
-    _genderController.dispose();
-    _phoneController.dispose();
-    super.dispose();
-  }
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
+    return BlocProvider(
+      create: (_) => MyDetailsBloc(),
+      child: BlocBuilder<MyDetailsBloc, MyDetailsState>(
+        builder: (context, state) {
+          final bloc = context.read<MyDetailsBloc>();
+
+          return CustomScaffold(
       appBar: CustomAppBar(
         height: 50.h,
         title: "My Details",
@@ -84,7 +59,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                 ),
                 UIHelper.verticalSpace(8.h),
                 CustomFormField(
-                  controller: _nameController,
+                  controller: bloc.nameController,
                   hintText: 'Enter your full name',
                   borderRadius: 12.r,
                   enableBorderColor: AppColors.cE6E6E6,
@@ -105,7 +80,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                 ),
                 UIHelper.verticalSpace(8.h),
                 CustomFormField(
-                  controller: _emailController,
+                  controller: bloc.emailController,
                   hintText: 'Enter your email',
                   inputType: TextInputType.emailAddress,
                   borderRadius: 12.r,
@@ -129,18 +104,24 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                CustomFormField(
-                  controller: _dateController,
-                  hintText: 'DD/MM/YYYY',
-                  isRead: true,
-                  borderRadius: 12.r,
-                  enableBorderColor: AppColors.cE6E6E6,
-                  focusBorderColor: AppColors.cE6E6E6,
-                  fillColor: AppColors.cFFFFFF,
-                  suffixIcon: Icon(
-                    Icons.calendar_today_outlined,
-                    color: AppColors.c999999,
-                    size: 20.sp,
+                GestureDetector(
+                  onTap: () => _pickDate(context, bloc),
+                  behavior: HitTestBehavior.translucent,
+                  child: AbsorbPointer(
+                    child: CustomFormField(
+                      controller: bloc.dateController,
+                      hintText: 'DD/MM/YYYY',
+                      isRead: true,
+                      borderRadius: 12.r,
+                      enableBorderColor: AppColors.cE6E6E6,
+                      focusBorderColor: AppColors.cE6E6E6,
+                      fillColor: AppColors.cFFFFFF,
+                      suffixIcon: Icon(
+                        Icons.calendar_today_outlined,
+                        color: AppColors.c999999,
+                        size: 20.sp,
+                      ),
+                    ),
                   ),
                 ),
                 UIHelper.verticalSpace(16.h),
@@ -150,17 +131,23 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                CustomFormField(
-                  controller: _genderController,
-                  isRead: true,
-                  borderRadius: 12.r,
-                  enableBorderColor: AppColors.cE6E6E6,
-                  focusBorderColor: AppColors.cE6E6E6,
-                  fillColor: AppColors.cFFFFFF,
-                  suffixIcon: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: AppColors.c1A1A1A,
-                    size: 24.sp,
+                GestureDetector(
+                  onTap: () => _pickGender(context, state, bloc),
+                  behavior: HitTestBehavior.translucent,
+                  child: AbsorbPointer(
+                    child: CustomFormField(
+                      controller: bloc.genderController,
+                      isRead: true,
+                      borderRadius: 12.r,
+                      enableBorderColor: AppColors.cE6E6E6,
+                      focusBorderColor: AppColors.cE6E6E6,
+                      fillColor: AppColors.cFFFFFF,
+                      suffixIcon: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: AppColors.c1A1A1A,
+                        size: 24.sp,
+                      ),
+                    ),
                   ),
                 ),
                 UIHelper.verticalSpace(16.h),
@@ -170,52 +157,44 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   style: TextFontStyle.textStyle14C1A1A1AGSS600,
                 ),
                 UIHelper.verticalSpace(8.h),
-                // CustomFormField(
-                //   controller: _phoneController,
-                //   isPhoneField: true,
-                //   countryCode: _selectedCountryCode,
-                //   hintText: 'Phone number',
-                //   borderRadius: 12.r,
-                //   enableBorderColor: AppColors.cE6E6E6,
-                //   focusBorderColor: AppColors.cE6E6E6,
-                //   fillColor: AppColors.cFFFFFF,
-                //   inputFormatters: [
-                //     FilteringTextInputFormatter.allow(RegExp(r'[0-9 +]')),
-                //   ],
-                //   onCountryCodeTap: () {
-
-                //   },
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'Please enter your phone number';
-                //     }
-                //     return null;
-                //   },
-                // ),
+                
                 CustomFormField(
-                  controller: _phoneController,
+                  controller: bloc.phoneController,
                   hintText: 'Phone number',
                   inputType: TextInputType.phone,
                   borderRadius: 12.r,
                   enableBorderColor: AppColors.cE6E6E6,
                   focusBorderColor: AppColors.cE6E6E6,
                   fillColor: AppColors.cFFFFFF,
-                  prefixIcon: SizedBox(
-                    width: 54.w,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '🇺🇸',
-                          style: TextFontStyle.textStyle16C1A1A1ADGSM500,
-                        ),
-                        UIHelper.horizontalSpace(6.w),
-                        Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          color: AppColors.c1A1A1A,
-                          size: 18.sp,
-                        ),
-                      ],
+                  prefixIconConstraints:
+                      BoxConstraints(minWidth: 0, maxWidth: 120.w),
+                  prefixIconPadding:
+                      EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                  prefixIcon: GestureDetector(
+                    onTap: () => _pickCountry(context, state, bloc),
+                    behavior: HitTestBehavior.translucent,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            state.selectedCountry.flag,
+                            style: TextFontStyle.textStyle16C1A1A1ADGSM500,
+                          ),
+                          UIHelper.horizontalSpace(6.w),
+                          Text(
+                            state.selectedCountry.dialCode,
+                            style: TextFontStyle.textStyle12C808080GSM500,
+                          ),
+                          UIHelper.horizontalSpace(4.w),
+                          Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: AppColors.c1A1A1A,
+                            size: 18.sp,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   validator: (value) {
@@ -245,6 +224,100 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
           ),
         ),
       ),
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _pickDate(
+    BuildContext context,
+    MyDetailsBloc bloc,
+  ) async {
+    final now = DateTime.now();
+    final initialDate = bloc.tryParseDate(bloc.dateController.text) ?? now;
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate.isAfter(now) ? now : initialDate,
+      firstDate: DateTime(1900),
+      lastDate: now,
+    );
+
+    if (picked != null && context.mounted) {
+      bloc.add(MyDetailsDateSelected(picked));
+    }
+  }
+
+  void _pickGender(
+    BuildContext context,
+    MyDetailsState state,
+    MyDetailsBloc bloc,
+  ) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          shadowColor: AppColors.cFFFFFF,
+          backgroundColor: AppColors.cFFFFFF,
+          title: const Text('Select Gender'),
+          children: state.genderOptions.map((option) {
+            final isSelected = option == state.selectedGender;
+            return SimpleDialogOption(
+              onPressed: () {
+                bloc.add(MyDetailsGenderSelected(option));
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    isSelected
+                        ? Icons.radio_button_checked
+                        : Icons.radio_button_unchecked,
+                    color: AppColors.c1A1A1A,
+                    size: 18.sp,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(option),
+                ],
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  void _pickCountry(
+    BuildContext context,
+    MyDetailsState state,
+    MyDetailsBloc bloc,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: state.countries.length,
+            separatorBuilder: (_, __) => Divider(height: 1.h),
+            itemBuilder: (context, index) {
+              final country = state.countries[index];
+              return ListTile(
+                leading: Text(country.flag),
+                title: Text(country.name),
+                subtitle: Text(country.dialCode),
+                trailing: country == state.selectedCountry
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () {
+                  bloc.add(MyDetailsCountrySelected(country));
+                  Navigator.of(context).pop();
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

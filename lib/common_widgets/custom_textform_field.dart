@@ -20,6 +20,8 @@ final class CustomFormField extends StatelessWidget {
   final bool? validation;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final EdgeInsets? prefixIconPadding;
+  final BoxConstraints? prefixIconConstraints;
   final bool isObsecure;
   final bool isPass;
   final FocusNode? focusNode;
@@ -53,6 +55,8 @@ final class CustomFormField extends StatelessWidget {
     this.validation = false,
     this.suffixIcon,
     this.prefixIcon,
+    this.prefixIconPadding,
+    this.prefixIconConstraints,
     this.isObsecure = false,
     this.isPass = false,
     this.focusNode,
@@ -103,8 +107,12 @@ final class CustomFormField extends StatelessWidget {
             fillColor: fillColor,
             isDense: true,
             suffixIcon: suffixIcon,
+            prefixIconConstraints: prefixIconConstraints,
             prefixIcon: prefixIcon != null
-                ? Padding(padding: EdgeInsets.all(12.sp), child: prefixIcon)
+                ? Padding(
+                    padding: prefixIconPadding ?? EdgeInsets.all(12.sp),
+                    child: prefixIcon,
+                  )
                 : null,
             hintText: hintText,
             hintStyle: hintsTextStyle ??
