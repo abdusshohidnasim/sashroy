@@ -258,7 +258,7 @@ class MyDetailsScreen extends StatelessWidget {
       builder: (context) {
         return SimpleDialog(
           shadowColor: AppColors.cFFFFFF,
-          backgroundColor: AppColors.cFFFFFF,
+          
           title: const Text('Select Gender'),
           children: state.genderOptions.map((option) {
             final isSelected = option == state.selectedGender;
