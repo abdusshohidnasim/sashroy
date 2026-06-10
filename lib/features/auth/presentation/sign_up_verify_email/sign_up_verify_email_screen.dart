@@ -22,11 +22,20 @@ class SignUpVerifyEmailScreen extends StatelessWidget {
 
   final String? email;
 
+  String maskEmail(String? email) {
+    if (email == null || !email.contains('@')) return 'your email';
+    final parts = email.split('@');
+    final username = parts[0];
+    final domain = parts[1];
+    if (username.isEmpty) return email;
+
+    final firstChar = username[0];
+    final stars = '*' * (username.length - 1);
+    return '$firstChar$stars@$domain';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final routeEmail = ModalRoute.of(context)?.settings.arguments as String?;
-    final effectiveEmail = email ?? routeEmail;
-
     return BlocProvider<SignUpVerificationBloc>(
       create: (_) => SignUpVerificationBloc(),
       child: CustomScaffold( 
@@ -45,6 +54,7 @@ class SignUpVerifyEmailScreen extends StatelessWidget {
             }
           },
           builder: (context, state) {
+            final effectiveEmail = email ?? (ModalRoute.of(context)?.settings.arguments as Map?)?["email"];
             final verificationBloc = context.read<SignUpVerificationBloc>();
 
             final defaultPinTheme = PinTheme(
@@ -54,7 +64,6 @@ class SignUpVerifyEmailScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.cE6E6E6,
                 borderRadius: BorderRadius.circular(12.r),
-                //border: Border.all(color: AppColors.cE6E6E6),
               ),
             );
 
@@ -82,9 +91,8 @@ class SignUpVerifyEmailScreen extends StatelessWidget {
                                   style: TextFontStyle.textStyle16C808080GSR400,
                                   children: [
                                     TextSpan(
-                                      text: effectiveEmail ?? 'your email',
-                                      style: TextFontStyle
-                                          .textStyle16C1A1A1ADGSM500,
+                                      text: maskEmail(effectiveEmail),
+                                      style: TextFontStyle.textStyle16C1A1A1ADGSM500,
                                     ),
                                   ],
                                 ),
@@ -105,33 +113,28 @@ class SignUpVerifyEmailScreen extends StatelessWidget {
                                 return null;
                               },
                               focusedPinTheme: defaultPinTheme.copyWith(
-                                decoration:
-                                    defaultPinTheme.decoration!.copyWith(
-                                  border: Border.all(
-                                    color: AppColors.c1A1A1A,
-                                  ),
+                                decoration: defaultPinTheme.decoration!.copyWith(
+                                  border: Border.all(color: AppColors.c1A1A1A),
                                 ),
                               ),
                               submittedPinTheme: defaultPinTheme.copyWith(
-                                decoration:
-                                    defaultPinTheme.decoration!.copyWith(
-                                  border: Border.all(
-                                    color: AppColors.c1A1A1A,
-                                  ),
+                                decoration: defaultPinTheme.decoration!.copyWith(
+                                  border: Border.all(color: AppColors.c1A1A1A),
                                 ),
                               ),
                               errorPinTheme: defaultPinTheme.copyWith(
-                                decoration:
-                                    defaultPinTheme.decoration!.copyWith(
-                                  border: Border.all(
-                                    color: AppColors.cD70808,
-                                  ),
+                                decoration: defaultPinTheme.decoration!.copyWith(
+                                  border: Border.all(color: AppColors.cD70808),
                                 ),
                               ),
                               onChanged: (value) {
                                 context.read<SignUpVerificationBloc>().add(
-                                      SignUpVerificationCodeChanged(
-                                          code: value),
+                                      SignUpVerificationCodeChanged(code: value),
+                                    );
+                              },
+                              onCompleted: (value) {
+                                context.read<SignUpVerificationBloc>().add(
+                                      SignUpVerificationCodeChanged(code: value),
                                     );
                               },
                             ),
@@ -147,28 +150,20 @@ class SignUpVerifyEmailScreen extends StatelessWidget {
                                           ? ' ${state.resendSecondsRemaining}s'
                                           : 'Resend Code',
                                       style: state.resendSecondsRemaining > 0
-                                          ? TextFontStyle
-                                              .textStyle14C1A1A1ADGSM500
-                                          : TextFontStyle
-                                              .textStyle14C1A1A1ADGSM500
-                                              .copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
+                                          ? TextFontStyle.textStyle14C808080GSR400
+                                          : TextFontStyle.textStyle14C1A1A1ADGSM500.copyWith(
+                                              decoration: TextDecoration.underline,
                                             ),
-                                      recognizer:
-                                          state.resendSecondsRemaining > 0
-                                              ? null
-                                              : (TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  context
-                                                      .read<
-                                                          SignUpVerificationBloc>()
-                                                      .add(
-                                                        SignUpVerificationResendRequested(
-                                                          email: effectiveEmail,
-                                                        ),
-                                                      );
-                                                }),
+                                      recognizer: state.resendSecondsRemaining > 0
+                                          ? null
+                                          : (TapGestureRecognizer()
+                                            ..onTap = () {
+                                              context.read<SignUpVerificationBloc>().add(
+                                                    SignUpVerificationResendRequested(
+                                                      email: effectiveEmail,
+                                                    ),
+                                                  );
+                                            }),
                                     ),
                                   ],
                                 ),
@@ -176,22 +171,17 @@ class SignUpVerifyEmailScreen extends StatelessWidget {
                             ),
                             UIHelper.verticalSpace(24.h),
                             CustomButton(
-                              isLoading: state.status ==
-                                  SignUpVerificationStatus.loading,
+                              isLoading: state.status == SignUpVerificationStatus.loading,
                               bgColor: state.code.length == 6
                                   ? AppColors.c1A1A1A
                                   : AppColors.cCCCCCC,
                               onTap: () {
-                                final isValid = verificationBloc
-                                        .formKey.currentState
-                                        ?.validate() ??
-                                    false;
+                                final isValid = verificationBloc.formKey.currentState?.validate() ?? false;
                                 if (!isValid) return;
 
                                 context.read<SignUpVerificationBloc>().add(
                                       SignUpVerificationSubmitted(
-                                        code:
-                                            verificationBloc.pinController.text,
+                                        code: verificationBloc.pinController.text,
                                         email: effectiveEmail,
                                       ),
                                     );

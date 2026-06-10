@@ -1,16 +1,14 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../forgot_verification/data/reset_verification_repository.dart';
+import 'package:sashroy/networks/api_acess.dart';
 import 'sign_up_verification_event.dart';
 import 'sign_up_verification_state.dart';
 
 class SignUpVerificationBloc
     extends Bloc<SignUpVerificationEvent, SignUpVerificationState> {
-  SignUpVerificationBloc({ResetVerificationRepository? repository})
-      : _repository = repository ?? const StubResetVerificationRepository(),
-        super(const SignUpVerificationState()) {
+  
+  SignUpVerificationBloc() : super(const SignUpVerificationState()) {
     on<SignUpVerificationCodeChanged>(_onCodeChanged);
     on<SignUpVerificationSubmitted>(_onSubmitted);
     on<SignUpVerificationResendRequested>(_onResendRequested);
@@ -19,10 +17,7 @@ class SignUpVerificationBloc
     _startResendCountdown();
   }
 
-  final ResetVerificationRepository _repository;
-
   Timer? _resendTimer;
-
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
@@ -47,13 +42,26 @@ class SignUpVerificationBloc
     emit(state.copyWith(status: SignUpVerificationStatus.loading));
 
     try {
-      await _repository.verifyResetCode(code: event.code, email: event.email);
-      emit(state.copyWith(status: SignUpVerificationStatus.success));
+      bool isSuccess = await postSignUpVerifyRxObj.post(
+        email: event.email,
+        verificationCode: event.code,
+      );
+
+      if (isSuccess) {
+        emit(state.copyWith(status: SignUpVerificationStatus.success));
+      } else {
+        emit(
+          state.copyWith(
+            status: SignUpVerificationStatus.failure,
+            errorMessage: 'Verification failed. Please check your code.',
+          ),
+        );
+      }
     } catch (e) {
       emit(
         state.copyWith(
           status: SignUpVerificationStatus.failure,
-          errorMessage: 'Verification failed. Please try again.',
+          errorMessage: 'An error occurred. Please try again.',
         ),
       );
     }
@@ -69,7 +77,19 @@ class SignUpVerificationBloc
     _startResendCountdown();
 
     try {
-      await _repository.resendResetCode(email: event.email);
+      bool isSuccess = await postResentRxObj.post(
+        email: event.email,
+      );
+
+      if (!isSuccess) {
+        emit(
+          state.copyWith(
+            errorMessage: 'Failed to resend code. Please try again.',
+            resendSecondsRemaining: 0,
+          ),
+        );
+        _cancelResendTimer();
+      }
     } catch (e) {
       emit(
         state.copyWith(
@@ -100,7 +120,6 @@ class SignUpVerificationBloc
 
   void _startResendCountdown() {
     _cancelResendTimer();
-
     _resendTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       add(const SignUpVerificationResendTicked());
     });

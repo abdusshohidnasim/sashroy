@@ -32,15 +32,15 @@ String? confirmPasswordValidator(String? value, String? originalPassword) {
 
 String? validatePhoneNumber(String? value) {
   // Regular expression for validating international phone numbers
-  // String pattern = r'^\+?([0-9]{1,3})?[-.●\s]?([0-9]{1,4})[-.●\s]?([0-9]{1,4})[-.●\s]?([0-9]{1,9})$';
-  // RegExp regExp = RegExp(pattern);
+  String pattern = r'^\+?([0-9]{1,3})?[-.●\s]?([0-9]{1,4})[-.●\s]?([0-9]{1,4})[-.●\s]?([0-9]{1,9})$';
+  RegExp regExp = RegExp(pattern);
 
   if (value == null || value.isEmpty) {
     return 'Please enter a phone number';
   }
-  // else if (!regExp.hasMatch(value)) {
-  //   return 'Please enter a valid phone number';
-  // }
+  else if (!regExp.hasMatch(value)) {
+    return 'Please enter a valid phone number';
+  }
   return null;
 }
 

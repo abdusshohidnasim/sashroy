@@ -81,6 +81,7 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             AccountItem(
+              onTap: () {NavigationService.navigateTo(Routes.helpCenterScreen);},
                 name: "Help Center", image: Assets.icons.headphones.path),
             CustomDivider(thickness: 8.h),
             AccountItem(

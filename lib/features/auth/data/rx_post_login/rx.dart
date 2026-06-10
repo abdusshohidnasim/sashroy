@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sashroy/constants/app_constants.dart';
+import 'package:sashroy/helpers/di.dart';
 import '../../../../../common_widgets/custom_toast.dart';
 import '../../../../../networks/rx_base.dart';
 import 'api.dart';
@@ -34,11 +36,16 @@ final class PostloginRx extends RxResponseInt {
 
   @override
   handleSuccessWithReturn(data) async {
+
+ final  accessToken = data["token"];
+ appData.write(kKeyAccessToken, accessToken);
+ log("Access token =============================================>  saved: $accessToken");
+
+
     log(data.toString());
     dataFetcher.sink.add(data);
     return true;
   }
-
   @override
   handleErrorWithReturn(error) {
     String message = 'Something went wrong';

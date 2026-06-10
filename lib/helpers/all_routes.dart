@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sashroy/features/auth/presentation/signup/signup_screen.dart';
+import 'package:sashroy/features/help_center/presentations/help_center_screen.dart';
 import 'package:sashroy/features/my_orders/presentations/my_orders_top_bar.dart';
 
 import '../buttom_nav_bar.dart';
@@ -41,6 +42,7 @@ final class Routes {
   static const String accountScreen = 'Account';
   static const String myOrdersTopBar = 'MyOrdersTopBar';
   static const String myDetailsScreen = 'MyDetails';
+  static const String helpCenterScreen = 'HelpCenterScreen';
 }
 
 final class RouteGenerator {
@@ -89,12 +91,25 @@ final class RouteGenerator {
                 builder: (context) => const SignUpEmailScreen())
             : _FadedTransitionRoute(
                 widget: const SignUpEmailScreen(), settings: settings);
+
+
+                  // case Routes.forgetOtpScreen:
+      // final args = settings.arguments as Map;
+      //   return defaultTargetPlatform == TargetPlatform.iOS
+      //       ? CupertinoPageRoute(
+      //           builder: (context) =>  ForgetOtpScreen(email: args["email"]))
+      //       : _FadedTransitionRoute(
+      //           widget:  ForgetOtpScreen(email: args["email"]), settings: settings);
+
+
+
       case Routes.signUpVerificationScreen:
+      final args = settings.arguments as Map;
         return defaultTargetPlatform == TargetPlatform.iOS
             ? CupertinoPageRoute(
-                builder: (context) => const SignUpVerifyEmailScreen())
+                builder: (context) =>  SignUpVerifyEmailScreen(email: args["email"]))
             : _FadedTransitionRoute(
-                widget: const SignUpVerifyEmailScreen(), settings: settings);
+                widget: SignUpVerifyEmailScreen(email: args["email"]), settings: settings);
 
       case Routes.homeScreen:
         return defaultTargetPlatform == TargetPlatform.iOS
@@ -167,6 +182,13 @@ final class RouteGenerator {
             : _FadedTransitionRoute(
             widget: MyDetailsScreen(), settings: settings);
 
+
+      case Routes.helpCenterScreen:
+        return defaultTargetPlatform == TargetPlatform.iOS
+          ? CupertinoPageRoute(builder: (context) => const HelpCenterScreen())
+            : _FadedTransitionRoute(
+            widget: const HelpCenterScreen(), settings: settings);
+
       //   final args = settings.arguments as Map;
       //   return defaultTargetPlatform == TargetPlatform.iOS
       //       ? CupertinoPageRoute(
@@ -176,26 +198,7 @@ final class RouteGenerator {
 
       //  widget: const PropertyPhotosScreen(), settings: settings);
 
-      // case Routes.propertyPhotosScreen2:
-      //   return defaultTargetPlatform == TargetPlatform.iOS
-      //       ? CupertinoPageRoute(
-      //           builder: (context) => const PropertyPhotosScreen2())
-      //       : _FadedTransitionRoute(
-      //           widget: const PropertyPhotosScreen2(), settings: settings);
-
-      // case Routes.propertyFillesScreen2:
-      //   return defaultTargetPlatform == TargetPlatform.iOS
-      //       ? CupertinoPageRoute(
-      //           builder: (context) => const PropertyFillesScreen2())
-      //       : _FadedTransitionRoute(
-      //           widget: const PropertyFillesScreen2(), settings: settings);
-
-      // case Routes.searchRopertiesScreen:
-      //   return defaultTargetPlatform == TargetPlatform.iOS
-      //       ? CupertinoPageRoute(
-      //           builder: (context) => const SearchRopertiesScreen())
-      //       : _FadedTransitionRoute(
-      //           widget: const SearchRopertiesScreen(), settings: settings);
+    
 
       // case Routes.forgetOtpScreen:
       // final args = settings.arguments as Map;

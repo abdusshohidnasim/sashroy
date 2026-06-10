@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 abstract class SignUpVerificationEvent extends Equatable {
-  
   const SignUpVerificationEvent();
 
   @override
@@ -19,18 +18,18 @@ class SignUpVerificationCodeChanged extends SignUpVerificationEvent {
 
 class SignUpVerificationSubmitted extends SignUpVerificationEvent {
   final String code;
-  final String? email;
+  final String email;
 
-  const SignUpVerificationSubmitted({required this.code, this.email});
+  const SignUpVerificationSubmitted({required this.code, required this.email});
 
   @override
   List<Object?> get props => [code, email];
 }
 
 class SignUpVerificationResendRequested extends SignUpVerificationEvent {
-  final String? email;
+  final String email;
 
-  const SignUpVerificationResendRequested({this.email});
+  const SignUpVerificationResendRequested({required this.email});
 
   @override
   List<Object?> get props => [email];

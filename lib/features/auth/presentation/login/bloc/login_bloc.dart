@@ -27,7 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(status: LoginStatus.loading));
 
       if (formKey.currentState!.validate()) {
-        debugPrint('✅ Form is valid, calling API...');
+        debugPrint('Form is valid, calling API...');
         try {
           bool success = await postLoginRxObj.post(
             email: emailController.text.trim(),
