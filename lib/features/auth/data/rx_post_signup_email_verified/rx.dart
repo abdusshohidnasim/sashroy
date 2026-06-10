@@ -1,36 +1,30 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../common_widgets/custom_toast.dart';
 import '../../../../../networks/rx_base.dart';
 import 'api.dart';
 
-final class PostsignupRx extends RxResponseInt {
-  final api = PostsignupApi.instance;
+final class PostSignUpVerifyRx extends RxResponseInt {
+  final api = PostSignUpVerifyApi.instance;
 
   String message = "Something went wrong";
 
-  PostsignupRx({required super.empty, required super.dataFetcher});
+  PostSignUpVerifyRx({required super.empty, required super.dataFetcher});
 
   ValueStream get filleData => dataFetcher.stream;
 
-  Future<bool> postsignup({
-    required String email,
-    required String password,
-    required String name,
-    required String number,
+  Future<bool> post({
+   required String email,
+    required String verificationCode,
   }) async {
     try {
       Map<String, dynamic> data = {
         "email": email,
-        "password": password,
-        "name": name, 
-        "number": number, 
+         "verificationCode": verificationCode,
+      };
 
-          };
-
-      Map resdata = await api.postSignup(data);
+      Map resdata = await api.postSignupVerify(data);
       return await handleSuccessWithReturn(resdata);
     } catch (error) {
       return await handleErrorWithReturn(error);

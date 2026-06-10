@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'buttom_nav_bar.dart';
+import 'package:sashroy/buttom_nav_bar.dart';
+import 'package:sashroy/helpers/post_login.dart';
 import 'constants/app_constants.dart';
 import 'features/auth/presentation/login/login_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
+import 'networks/dio/dio.dart';
 import 'welcome_screen.dart';
 
 final class Loading extends StatefulWidget {
@@ -42,13 +44,13 @@ class _LoadingState extends State<Loading> {
     //AutoAppUpdateUtil.instance.checkAppUpdate();
     await setInitValue();
 
-    // if (appData.read(kKeyIsLoggedIn)) {
-    //   String token = appData.read(kKeyAccessToken);
-    //   DioSingleton.instance.update(token);
-    //  await performPostLoginActions();
-    // } else {
-    //   //  NotificationService().cancelAllNotifications();
-    // }
+    if (appData.read(kKeyIsLoggedIn)) {
+      String token = appData.read(kKeyAccessToken);
+      DioSingleton.instance.update(token);
+     await performPostLoginActions();
+    } else {
+      //  NotificationService().cancelAllNotifications();
+    }
 
     if (!mounted) return;
     setState(() {
@@ -62,7 +64,7 @@ class _LoadingState extends State<Loading> {
 
     // Navigator.pushReplacement(
     //   context,
-    //   MaterialPageRoute(builder: (context) => LogInScreen()),
+    //   MaterialPageRoute(builder: (context) => Login()),
     // );
   }
 
@@ -73,13 +75,13 @@ class _LoadingState extends State<Loading> {
     } else {
       return appData.read(kKeyIsLoggedIn)
         //  ? const ButtomNavBar()
-        ? const LoginScreen()
+        ? const ButtomNavBar()
           : appData.read(kKeyfirstTime)
-             ? const ButtomNavBar()
-              : const ButtomNavBar();
+            //  ? const ButtomNavBar()
+            //   : const ButtomNavBar();
              
-              // ? const LoginScreen()
-              // : const LoginScreen();
+              ? const LoginScreen()
+              : const LoginScreen();
     }
   }
 }

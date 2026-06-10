@@ -91,9 +91,9 @@ class LoginScreen
                                       loginreadbloc.add(TogglePasswordVisibilityEvent());
                                     },
                                     child: Image.asset(
-                                      state.isPasswordVisible ? Assets.icons.eyeOff.path : Assets.icons.eye.path,
+                                      state.isPasswordVisible ? Assets.icons.eye.path : Assets.icons.eyeOff.path,
                                       width: 20.w,
-                                      color: state.isPasswordVisible ? AppColors.c808080 : AppColors.c1A1A1A,
+                                      color: state.isPasswordVisible ? AppColors.c1A1A1A : AppColors.c1A1A1A,
                                     ),
                                   )),
                             ),

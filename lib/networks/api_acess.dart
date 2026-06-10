@@ -1,11 +1,22 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:sashroy/features/auth/data/rx_post_signup/rx.dart';
 import '../features/auth/data/rx_post_login/rx.dart';
+import '../features/auth/data/rx_post_resent/rx.dart';
+import '../features/auth/data/rx_post_signup_email_verified/rx.dart';
+
+PostloginRx postLoginRxObj =
+    PostloginRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+PostsignupRx postSignupRxObj =
+    PostsignupRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+PostSignUpVerifyRx postSignUpVerifyRxObj =
+    PostSignUpVerifyRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+    PostResentRx postResentRxObj =
+    PostResentRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
 
 
-PostloginRx postLoginRxObj = PostloginRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
-PostsignupRx postSignupRxObj = PostsignupRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
 //PostSignupRx postSignupRxObj = PostSignupRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 // GetProfileRx profileRxObj = GetProfileRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 

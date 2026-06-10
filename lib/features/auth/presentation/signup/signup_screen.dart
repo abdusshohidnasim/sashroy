@@ -29,6 +29,11 @@ class SignupScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Signup successful!')),
             );
+
+            NavigationService.navigateToWithArgs(
+              Routes.signUpVerificationScreen,
+             {"email": context.read<SignupBloc>().emailController.text}
+            );
           } else if (state.isFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Signup failed. Please try again.')),
@@ -49,7 +54,6 @@ class SignupScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                        
                           Text(
                             "Create an account",
                             style: TextFontStyle.textStyle28C1A1A1ADGSS600,
@@ -71,6 +75,19 @@ class SignupScreen extends StatelessWidget {
                             fillColor: AppColors.cFFFFFF,
                             enableBorderColor: AppColors.cE6E6E6,
                             hintText: "Enter your full name",
+                          ),
+                          UIHelper.verticalSpace(24.h),
+                          _buildTextforomfileName(
+                            'Phone Number',
+                          ),
+                          UIHelper.verticalSpace(5.h),
+                          CustomFormField(
+                            validator: validatePhoneNumber,
+                            textInputAction: TextInputAction.next,
+                            controller: signupReadBloc.phoneController,
+                            fillColor: AppColors.cFFFFFF,
+                            enableBorderColor: AppColors.cE6E6E6,
+                            hintText: "Enter your phone number",
                           ),
                           UIHelper.verticalSpace(24.h),
                           _buildTextforomfileName(
@@ -110,11 +127,11 @@ class SignupScreen extends StatelessWidget {
                                   },
                                   child: Image.asset(
                                     state.isPasswordVisible
-                                        ? Assets.icons.eyeOff.path
-                                        : Assets.icons.eye.path,
+                                        ? Assets.icons.eye.path
+                                        : Assets.icons.eyeOff.path,
                                     width: 20.w,
                                     color: state.isPasswordVisible
-                                        ? AppColors.c808080
+                                        ? AppColors.c1A1A1A
                                         : AppColors.c1A1A1A,
                                   ),
                                 )),
@@ -198,7 +215,21 @@ class SignupScreen extends StatelessWidget {
                                     ? AppColors.c1A1A1A
                                     : AppColors.cCCCCCC,
                                 onTap: () {
-                                  NavigationService.navigateTo(Routes.signUpEmailScreen);
+                                  final isValid = signupReadBloc
+                                          .formKey.currentState
+                                          ?.validate() ??
+                                      false;
+                                  if (!isValid) return;
+
+                                  signupReadBloc.add(
+                                    SignupButtompressedEvent(
+                                      name: nameText,
+                                      phone: signupReadBloc
+                                          .phoneController.text, // ফোন নম্বর
+                                      email: emailText,
+                                      password: passwordText,
+                                    ),
+                                  );
                                   // final isValid = signupReadBloc
                                   //         .formKey.currentState
                                   //         ?.validate() ??
@@ -249,44 +280,42 @@ class SignupScreen extends StatelessWidget {
                               width: 20.w,
                             ),
                             bgColor: AppColors.cFFFFFF,
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                             btnName: "Sign up with Google",
                             textStyle: TextFontStyle.textStyle16C1A1A1ADGSM500
                                 .copyWith(fontWeight: FontWeight.w700),
                           ),
-
-UIHelper.verticalSpace(40.h),
-                           Center(
-                             child: RichText(
-                                               text: TextSpan(
-                                             text: 'Already have an account? ',
-                                             style: TextFontStyle.textStyle14C808080GSR400,
-                                             children: [
-                                               TextSpan(
-                                                 text: 'Login',
-                                                 style: TextFontStyle.textStyle14C1A1A1ADGSM500.copyWith(
-                                                   decoration: TextDecoration.underline,
-                                                   fontWeight: FontWeight.w600,
-                                                 ),
-                                                 recognizer: TapGestureRecognizer()
-                                                   ..onTap = () {
-                                                     NavigationService.navigateToReplacement(
-                                                       Routes.loginScreen,
-                                                     );
-                                                   },
-                                               ),
-                                             ],
-                                           )),
-                           ),
+                          UIHelper.verticalSpace(40.h),
+                          Center(
+                            child: RichText(
+                                text: TextSpan(
+                              text: 'Already have an account? ',
+                              style: TextFontStyle.textStyle14C808080GSR400,
+                              children: [
+                                TextSpan(
+                                  text: 'Login',
+                                  style: TextFontStyle.textStyle14C1A1A1ADGSM500
+                                      .copyWith(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      NavigationService.navigateToReplacement(
+                                      
+                                        Routes.loginScreen,
+                                      );
+                                    },
+                                ),
+                              ],
+                            )),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
-             
             ],
           );
         }),
