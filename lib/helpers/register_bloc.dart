@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sashroy/features/auth/presentation/forgot_password_email/bloc/forgot_password_bloc.dart';
 import 'package:sashroy/features/auth/presentation/sign_up_email/bloc/sign_up_email_bloc.dart';
 import 'package:sashroy/features/card/presentation/bloc/card_bloc.dart';
+import 'package:sashroy/features/home/presentation/bloc/home_bloc.dart';
 import '../features/auth/presentation/forgot_password_set/bloc/forgot_set_password_bloc.dart';
 import '../features/auth/presentation/login/bloc/login_bloc.dart';
 import '../features/auth/presentation/sign_up_verify_email/bloc/sign_up_verification_bloc.dart';
@@ -37,9 +38,9 @@ List<BlocProvider> appBlocProviders = [
   ),
   
   // 
-  // BlocProvider<ProductBloc>(
-  //   create: (_) => ProductBloc(),
-  // ),
+  BlocProvider<HomeBloc>(
+    create: (_) => HomeBloc(),
+  ),
   // নতুন bloc এখানে add করবেন
 ];
 
