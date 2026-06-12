@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sashroy/common_widgets/custom_appbar.dart';
+import 'package:sashroy/common_widgets/custom_dot_indicator.dart';
 import 'package:sashroy/common_widgets/product_card.dart';
 import 'package:sashroy/common_widgets/custom_textform_field.dart';
 import 'package:sashroy/common_widgets/viw_all_widgtes.dart';
@@ -15,7 +16,6 @@ import 'package:sashroy/helpers/all_routes.dart';
 import 'package:sashroy/helpers/navigation_service.dart';
 import 'package:sashroy/helpers/ui_helpers.dart';
 
-import '../../../common_widgets/custom_dot_indicator.dart';
 import '../../../gen/assets.gen.dart';
 import 'widgets/name_and_buttom.dart';
 
