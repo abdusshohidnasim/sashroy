@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // 💡 ক্যাশ ইমেজের জন্য যোগ করা হয়েছে
 
 import '../constants/text_font_style.dart';
 import '../gen/colors.gen.dart';
@@ -43,6 +44,7 @@ final class ProductCard extends StatelessWidget {
     this.originalPriceStyle,
     this.discountStyle,
     this.imageHeight,
+    this.width, // 💡 বাইরে থেকে উইথ কন্ট্রোল করার জন্য নতুন প্যারামিটার
   });
 
   final String title;
@@ -50,6 +52,7 @@ final class ProductCard extends StatelessWidget {
   final String image;
   final BoxFit imageFit;
   final double? imageHeight;
+  final double? width; // 💡 নতুন
 
   final String? originalPriceText;
   final String? discountText;
@@ -96,114 +99,103 @@ final class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BorderRadiusGeometry radius = borderRadius ??
-        BorderRadius.circular(
-          16.r,
-        );
+    final BorderRadiusGeometry radius = borderRadius ?? BorderRadius.circular(16.r);
     final Color cardColor = backgroundColor ?? AppColors.cFFFFFF;
 
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: radius,
-            boxShadow: [
-              BoxShadow(
-                color:
-                    (shadowColor ?? AppColors.c000000).withValues(alpha: 0.06),
-                blurRadius: 16.r,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Material(
-            color: cardColor,
-            borderRadius: radius,
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: onTap,
-              child: SizedBox(
-                height: imageHeight ?? 200.h,
-                width: double.infinity,
-                child: _ImageArea(
-                  backgroundColor: imageBackgroundColor ??
-                      AppColors.cE6E6E6.withValues(alpha: 0.35),
-                  padding: imagePadding ?? EdgeInsets.zero,
-                  image: image,
-                  imageFit: imageFit,
-                  showFavoriteButton: showFavoriteButton,
-                  showCartButton: showCartButton,
-                  isFavorite: isFavorite,
-                  onFavoriteTap: onFavoriteTap,
-                  onCartTap: onCartTap,
-                  actionButtonSize: actionButtonSize ?? 44.w,
-                  actionIconSize: actionIconSize ?? 22.sp,
-                  actionButtonBackgroundColor:
-                      actionButtonBackgroundColor ?? AppColors.cFFFFFF,
-                  actionButtonShadowColor:
-                      actionButtonShadowColor ?? AppColors.c000000,
-                  favoriteActiveColor: favoriteActiveColor ?? AppColors.cD70808,
-                  favoriteInactiveColor:
-                      favoriteInactiveColor ?? AppColors.c1A1A1A,
-                  cartIconColor: cartIconColor ?? AppColors.c1A1A1A,
+    return SizedBox(
+      width: width ?? double.infinity, 
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, 
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: radius,
+              boxShadow: [
+                BoxShadow(
+                  color: (shadowColor ?? AppColors.c000000).withValues(alpha: 0.06),
+                  blurRadius: 16.r,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Material(
+              color: cardColor,
+              borderRadius: radius,
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: onTap,
+                child: SizedBox(
+                  height: imageHeight ?? 200.h,
+                  width: double.infinity, // এখানে এখন ইনফিনিটি দিলে সমস্যা নেই, কারণ মেইন প্যারেন্ট বাউন্ডেড
+                  child: _ImageArea(
+                    backgroundColor: imageBackgroundColor ?? AppColors.cE6E6E6.withValues(alpha: 0.35),
+                    padding: imagePadding ?? EdgeInsets.zero,
+                    image: image,
+                    imageFit: imageFit,
+                    showFavoriteButton: showFavoriteButton,
+                    showCartButton: showCartButton,
+                    isFavorite: isFavorite,
+                    onFavoriteTap: onFavoriteTap,
+                    onCartTap: onCartTap,
+                    actionButtonSize: actionButtonSize ?? 44.w,
+                    actionIconSize: actionIconSize ?? 22.sp,
+                    actionButtonBackgroundColor: actionButtonBackgroundColor ?? AppColors.cFFFFFF,
+                    actionButtonShadowColor: actionButtonShadowColor ?? AppColors.c000000,
+                    favoriteActiveColor: favoriteActiveColor ?? AppColors.cD70808,
+                    favoriteInactiveColor: favoriteInactiveColor ?? AppColors.c1A1A1A,
+                    cartIconColor: cartIconColor ?? AppColors.c1A1A1A,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: contentPadding ??
-              EdgeInsets.symmetric(horizontal: 2.w, vertical: 12.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: titleStyle ??
-                    TextFontStyle.textStyle16C1A1A1AGSS600
-                        .copyWith(overflow: TextOverflow.ellipsis),
-              ),
-              SizedBox(height: 8.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: _PriceRow(
-                      priceText: priceText,
-                      originalPriceText: originalPriceText,
-                      discountText: discountText,
-                      priceStyle:
-                          priceStyle ?? TextFontStyle.textStyle12C808080GSM500,
-                      originalPriceStyle: originalPriceStyle ??
-                          TextFontStyle.textStyle12C808080GSM500.copyWith(
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                      discountStyle: discountStyle ??
-                          TextFontStyle.textStyle12C808080GSM500.copyWith(
-                            color: AppColors.cED1010,
-                            fontWeight: FontWeight.w600,
-                          ),
+          Padding(
+            padding: contentPadding ?? EdgeInsets.symmetric(horizontal: 2.w, vertical: 12.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  maxLines: 1, // 💡 হরাইজন্টাল লিস্টের সুবিধার জন্য ১ বা ২ লাইনে ফিক্সড করা ভালো
+                  overflow: TextOverflow.ellipsis,
+                  style: titleStyle ?? TextFontStyle.textStyle16C1A1A1AGSS600,
+                ),
+                SizedBox(height: 8.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _PriceRow(
+                        priceText: priceText,
+                        originalPriceText: originalPriceText,
+                        discountText: discountText,
+                        priceStyle: priceStyle ?? TextFontStyle.textStyle12C808080GSM500,
+                        originalPriceStyle: originalPriceStyle ??
+                            TextFontStyle.textStyle12C808080GSM500.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                        discountStyle: discountStyle ??
+                            TextFontStyle.textStyle12C808080GSM500.copyWith(
+                              color: AppColors.cED1010,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
                     ),
-                  ),
-                  if (rating != null)
-                    Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: _StarRating(
+                    if (rating != null)
+                      _StarRating(
                         rating: rating!,
                         maxRating: ratingMax,
                         size: starSize ?? 14.sp,
                         color: starColor ?? AppColors.cFCA120,
-                        inactiveColor: starInactiveColor ??
-                            AppColors.c808080.withValues(alpha: 0.35),
+                        inactiveColor: starInactiveColor ?? AppColors.c808080.withValues(alpha: 0.35),
                       ),
-                    ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -232,19 +224,15 @@ final class _ImageArea extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final String image;
   final BoxFit imageFit;
-
   final bool showFavoriteButton;
   final bool showCartButton;
-
   final bool isFavorite;
   final VoidCallback? onFavoriteTap;
   final VoidCallback? onCartTap;
-
   final double actionButtonSize;
   final double actionIconSize;
   final Color actionButtonBackgroundColor;
   final Color actionButtonShadowColor;
-
   final Color favoriteActiveColor;
   final Color favoriteInactiveColor;
   final Color cartIconColor;
@@ -270,11 +258,8 @@ final class _ImageArea extends StatelessWidget {
               top: inset,
               right: inset,
               child: _OverlayActionButton(
-                icon: isFavorite
-                    ? Icons.favorite_rounded
-                    : Icons.favorite_border_rounded,
-                iconColor:
-                    isFavorite ? favoriteActiveColor : favoriteInactiveColor,
+                icon: isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                iconColor: isFavorite ? favoriteActiveColor : favoriteInactiveColor,
                 onTap: onFavoriteTap,
                 size: actionButtonSize,
                 iconSize: actionIconSize,
@@ -317,23 +302,21 @@ final class _CardImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_isNetworkImage) {
-      return Image.network(
-        image,
+      // 💡 ফিক্স: স্মুথ পারফরম্যান্স এবং ক্যাশিংয়ের জন্য CachedNetworkImage ব্যবহার করা হয়েছে
+      return CachedNetworkImage(
+        imageUrl: image,
         fit: fit,
-        errorBuilder: (context, error, stackTrace) {
-          return Container(
-            color: AppColors.cE6E6E6,
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.image_not_supported_outlined,
-              size: 28.sp,
-              color: AppColors.c808080,
-            ),
-          );
-        },
+        placeholder: (context, url) => Container(
+          color: AppColors.cE6E6E6,
+          child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        ),
+        errorWidget: (context, url, error) => Container(
+          color: AppColors.cE6E6E6,
+          alignment: Alignment.center,
+          child: Icon(Icons.image_not_supported_outlined, size: 28.sp, color: AppColors.c808080),
+        ),
       );
     }
-
     return Image.asset(image, fit: fit);
   }
 }
@@ -353,13 +336,10 @@ final class _OverlayActionButton extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final VoidCallback? onTap;
-
   final double size;
   final double iconSize;
-
   final Color backgroundColor;
   final Color shadowColor;
-
   final String semanticLabel;
 
   @override
@@ -389,11 +369,7 @@ final class _OverlayActionButton extends StatelessWidget {
             child: SizedBox(
               height: size,
               width: size,
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: iconSize,
-              ),
+              child: Icon(icon, color: iconColor, size: iconSize),
             ),
           ),
         ),
@@ -415,7 +391,6 @@ final class _PriceRow extends StatelessWidget {
   final String priceText;
   final String? originalPriceText;
   final String? discountText;
-
   final TextStyle priceStyle;
   final TextStyle originalPriceStyle;
   final TextStyle discountStyle;
@@ -472,19 +447,11 @@ final class _StarRating extends StatelessWidget {
     for (int i = 0; i < fullStars; i++) {
       stars.add(Icon(Icons.star_rounded, size: size, color: color));
     }
-
     if (hasHalfStar) {
       stars.add(Icon(Icons.star_half_rounded, size: size, color: color));
     }
-
     for (int i = 0; i < emptyStars; i++) {
-      stars.add(
-        Icon(
-          Icons.star_outline_rounded,
-          size: size,
-          color: inactiveColor,
-        ),
-      );
+      stars.add(Icon(Icons.star_outline_rounded, size: size, color: inactiveColor));
     }
 
     return Row(mainAxisSize: MainAxisSize.min, children: stars);
