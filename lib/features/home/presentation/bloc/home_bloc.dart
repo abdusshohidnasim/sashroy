@@ -1,27 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sashroy/features/home/model/best_selling_model.dart' as bs;
+import 'package:sashroy/features/home/model/recent_producted_model.dart' as rp;
+import 'package:sashroy/networks/api_acess.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Cubit<HomeStateData> {
   HomeBloc() : super(const HomeStateData(state: HomeState.initial)) {
-    _dealsScrollController.addListener(_onDealsScroll);
+    fetchHomeData();
   }
 
-  // 💡 Controllers — state এর বাইরে রাখা হলো কারণ এগুলো Equatable props এ যাবে না
   final PageController newArrivalController =
       PageController(viewportFraction: 0.5);
   final PageController bestSellingController =
       PageController(viewportFraction: 0.5);
   final PageController topRatedController =
       PageController(viewportFraction: 0.5);
-  final ScrollController _dealsScrollController = ScrollController();
+  final PageController _dealsScrollController =
+      PageController(viewportFraction: 0.45);
 
-  ScrollController get dealsScrollController => _dealsScrollController;
+  PageController get dealsScrollController => _dealsScrollController;
 
-  static const int totalNewArrival = 6;
-  static const int totalBestSelling = 6;
   static const int totalTopRated = 6;
+
+  // ==================== FETCH API DATA ====================
+
+  Future<void> fetchHomeData() async {
+    emit(state.copyWith(state: HomeState.loading));
+    try {
+      final results = await Future.wait([
+        getBestSellingRxObj.fetchfunctionName(),
+        getRecentActivityRxObj.fetchfunctionName(),
+      ]);
+
+      if (results[0] && results[1]) {
+        final bsData =
+            getBestSellingRxObj.dataFetcher.value as bs.BestSellingModel;
+        final rpData =
+            getRecentActivityRxObj.dataFetcher.value as rp.RecentProductsModel;
+
+        emit(state.copyWith(
+          state: HomeState.success,
+          bestSellingProducts: bsData.products,
+          newArrivalProducts: rpData.products,
+        ));
+      } else {
+        emit(state.copyWith(
+          state: HomeState.failure,
+          errorMessage: "Failed to fetch home data",
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        state: HomeState.failure,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
 
   // ==================== INDEX CHANGE HANDLERS ====================
 
@@ -37,6 +72,10 @@ class HomeBloc extends Cubit<HomeStateData> {
     emit(state.copyWith(topRatedIndex: index));
   }
 
+  void onDealsPageChanged(int index) {
+    emit(state.copyWith(dealsActiveIndex: index));
+  }
+
   // ==================== NAVIGATION (LEFT/RIGHT BUTTON) ====================
 
   void newArrivalPrev() {
@@ -46,7 +85,10 @@ class HomeBloc extends Cubit<HomeStateData> {
   }
 
   void newArrivalNext() {
-    if (state.newArrivalIndex == totalNewArrival - 1) return;
+    if (state.newArrivalProducts.isEmpty) return;
+    int maxIndex = state.newArrivalProducts.length - 2;
+    if (maxIndex < 0) maxIndex = 0;
+    if (state.newArrivalIndex >= maxIndex) return;
     newArrivalController.nextPage(
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
@@ -58,7 +100,10 @@ class HomeBloc extends Cubit<HomeStateData> {
   }
 
   void bestSellingNext() {
-    if (state.bestSellingIndex == totalBestSelling - 1) return;
+    if (state.bestSellingProducts.isEmpty) return;
+    int maxIndex = state.bestSellingProducts.length - 2;
+    if (maxIndex < 0) maxIndex = 0;
+    if (state.bestSellingIndex >= maxIndex) return;
     bestSellingController.nextPage(
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
@@ -75,35 +120,12 @@ class HomeBloc extends Cubit<HomeStateData> {
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
-  // ==================== DEALS SCROLL LISTENER ====================
-
-  void _onDealsScroll() {
-    if (!_dealsScrollController.hasClients) return;
-
-    final double offset = _dealsScrollController.offset;
-    final double width0 = 165.w + 12.w;
-    final double width1 = 135.w + 12.w;
-
-    int index = 0;
-    if (offset < width0 / 2) {
-      index = 0;
-    } else if (offset < width0 + width1 / 2) {
-      index = 1;
-    } else if (offset < width0 + width1 + width1 / 2) {
-      index = 2;
-    } else {
-      index = 3;
-    }
-
-    if (index != state.dealsActiveIndex && index >= 0 && index < 4) {
-      emit(state.copyWith(dealsActiveIndex: index));
-    }
-  }
+  // ==================== DEALS SCROLL LISTENER REMOVED ====================
 
   // ==================== FAVORITE ====================
 
-  void toggleFavorite(int productId) {
-    final updatedSet = Set<int>.from(state.favoriteProductIds);
+  void toggleFavorite(String productId) {
+    final updatedSet = Set<String>.from(state.favoriteProductIds);
     if (updatedSet.contains(productId)) {
       updatedSet.remove(productId);
     } else {
@@ -112,7 +134,7 @@ class HomeBloc extends Cubit<HomeStateData> {
     emit(state.copyWith(favoriteProductIds: updatedSet));
   }
 
-  bool isFavorite(int productId) =>
+  bool isFavorite(String productId) =>
       state.favoriteProductIds.contains(productId);
 
   // ==================== DISPOSE ====================
@@ -122,7 +144,6 @@ class HomeBloc extends Cubit<HomeStateData> {
     newArrivalController.dispose();
     bestSellingController.dispose();
     topRatedController.dispose();
-    _dealsScrollController.removeListener(_onDealsScroll);
     _dealsScrollController.dispose();
     return super.close();
   }

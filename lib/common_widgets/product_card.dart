@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart'; // 💡 ক্যাশ ইমেজের জন্য যোগ করা হয়েছে
+import 'package:sashroy/common_widgets/shimmer.dart';
 
 import '../constants/text_font_style.dart';
 import '../gen/colors.gen.dart';
@@ -306,9 +307,10 @@ final class _CardImage extends StatelessWidget {
       return CachedNetworkImage(
         imageUrl: image,
         fit: fit,
-        placeholder: (context, url) => Container(
-          color: AppColors.cE6E6E6,
-          child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        placeholder: (context, url) => Shimmer(
+          child: Container(
+            color: Colors.white,
+          ),
         ),
         errorWidget: (context, url, error) => Container(
           color: AppColors.cE6E6E6,

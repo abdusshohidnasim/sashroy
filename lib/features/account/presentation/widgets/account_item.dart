@@ -20,6 +20,7 @@ class AccountItem extends StatelessWidget {
               padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
               child: GestureDetector(
                 onTap: onTap,
+                behavior: HitTestBehavior.opaque,
                 child: Row(
                   children: [
                     Image.asset(image??Assets.icons.box.path, height: 24.h, width: 24.w),

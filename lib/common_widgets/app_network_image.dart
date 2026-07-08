@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sashroy/common_widgets/shimmer.dart';
 
 class AppNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -49,19 +50,11 @@ class AppNetworkImage extends StatelessWidget {
   }
 
   Widget _buildPlaceholder() {
-    return Container(
-      height: height?.h,
-      width: width?.w,
-      color: placeholderColor,
-      child: Center(
-        child: SizedBox(
-          width: placeholderIconSize.w,
-          height: placeholderIconSize.h,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.w,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[600]!),
-          ),
-        ),
+    return Shimmer(
+      child: Container(
+        height: height?.h,
+        width: width?.w,
+        color: Colors.white,
       ),
     );
   }
