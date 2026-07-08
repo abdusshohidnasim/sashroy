@@ -24,14 +24,17 @@ final class EndPoints {
   static String resend() => "auth/resend-verification-code";
 
   ///profile
-  static String profile() => "/user/profile";
+  static String postProfile() => "profile";
+    static String getProfile() => "profile/me";
 
-  // static String getShopByCategories(String slug) =>
-  //     "/api/shop-categories/$slug/";
 
-  static String example() => "/api/";
 
   static String products(int pageNum, int perPage) =>
       "/products?page=$pageNum&per_page=$perPage";
   static String productDetails(int id) => "/products/$id";
+
+  //product
+  static String recentActivity() => "product/recent";
+  static String bestSelling() => "product/best-selling";
+
 }

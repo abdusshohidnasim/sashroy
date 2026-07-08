@@ -35,3 +35,11 @@ class MyDetailsDateSelected extends MyDetailsEvent {
 	@override
 	List<Object?> get props => [date];
 }
+
+class FetchProfile extends MyDetailsEvent {
+	const FetchProfile();
+}
+
+class SubmitProfile extends MyDetailsEvent {
+	const SubmitProfile();
+}

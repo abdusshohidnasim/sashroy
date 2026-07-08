@@ -32,7 +32,7 @@ class NameAndButtom extends StatelessWidget {
 
     return Row(
       children: [
-        Text(name, style: TextFontStyle.textStyle20C000000Poppins500),
+        Text(name, style: TextFontStyle.textStyle20C000000Poppins700),
         const Spacer(),
         GestureDetector(
           onTap: onLeftTap,
@@ -85,9 +85,7 @@ class NameAndButtom extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: Image.asset(
                 Assets.icons.rightIconNoColors.path,
-                color: isRightActive
-                    ? iconActive
-                    : iconDisable, 
+                color: isRightActive ? iconActive : iconDisable,
               ),
             ),
           ),

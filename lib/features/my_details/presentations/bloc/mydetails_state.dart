@@ -15,12 +15,16 @@ class CountryOption extends Equatable {
 	List<Object?> get props => [name, flag, dialCode];
 }
 
+enum MyDetailsStatus { initial, loading, success, failure }
+
 class MyDetailsState extends Equatable {
 	final List<String> genderOptions;
 	final List<CountryOption> countries;
 	final String selectedGender;
 	final CountryOption selectedCountry;
 	final String dateText;
+	final MyDetailsStatus status;
+	final String? errorMessage;
 
 	const MyDetailsState({
 		required this.genderOptions,
@@ -28,6 +32,8 @@ class MyDetailsState extends Equatable {
 		required this.selectedGender,
 		required this.selectedCountry,
 		required this.dateText,
+		this.status = MyDetailsStatus.initial,
+		this.errorMessage,
 	});
 
 	MyDetailsState copyWith({
@@ -36,6 +42,8 @@ class MyDetailsState extends Equatable {
 		String? selectedGender,
 		CountryOption? selectedCountry,
 		String? dateText,
+		MyDetailsStatus? status,
+		String? errorMessage,
 	}) {
 		return MyDetailsState(
 			genderOptions: genderOptions ?? this.genderOptions,
@@ -43,6 +51,8 @@ class MyDetailsState extends Equatable {
 			selectedGender: selectedGender ?? this.selectedGender,
 			selectedCountry: selectedCountry ?? this.selectedCountry,
 			dateText: dateText ?? this.dateText,
+			status: status ?? this.status,
+			errorMessage: errorMessage ?? this.errorMessage,
 		);
 	}
 
@@ -53,5 +63,7 @@ class MyDetailsState extends Equatable {
 				selectedGender,
 				selectedCountry,
 				dateText,
+				status,
+				errorMessage,
 			];
 }

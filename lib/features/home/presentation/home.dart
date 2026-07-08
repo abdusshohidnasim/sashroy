@@ -7,6 +7,7 @@ import 'package:sashroy/common_widgets/custom_dot_indicator.dart';
 import 'package:sashroy/common_widgets/product_card.dart';
 import 'package:sashroy/common_widgets/custom_textform_field.dart';
 import 'package:sashroy/common_widgets/viw_all_widgtes.dart';
+import 'package:sashroy/common_widgets/shimmer.dart';
 import 'package:sashroy/constants/text_font_style.dart';
 import 'package:sashroy/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sashroy/features/home/presentation/bloc/home_state.dart';
@@ -18,7 +19,6 @@ import 'package:sashroy/helpers/ui_helpers.dart';
 
 import '../../../gen/assets.gen.dart';
 import 'widgets/name_and_buttom.dart';
-
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -74,8 +74,6 @@ class HomeScreen extends StatelessWidget {
                 Center(
                   child: Column(
                     children: [
-                      ViwAllWidgtes(ontab: () {}),
-                      UIHelper.verticalSpace(20.h),
                       Text(
                         "Follow Us on Social",
                         style: TextFontStyle.textStyle20C000000Poppins500,
@@ -101,9 +99,6 @@ class HomeScreen extends StatelessWidget {
                 Center(
                   child: Column(
                     children: [
-                      UIHelper.verticalSpace(20.h),
-                      ViwAllWidgtes(ontab: () {}),
-                      UIHelper.verticalSpace(30.h),
                       Text(
                         "Deals of the Month",
                         style: TextFontStyle.textStyle20C000000Poppins500,
@@ -124,7 +119,6 @@ class HomeScreen extends StatelessWidget {
                 UIHelper.verticalSpace(20.h),
                 UIHelper.verticalSpace(40.h),
 
-                // ==================== TOP RATED SECTION ====================
                 const _TopRatedSection(),
 
                 UIHelper.verticalSpace(40.h),
@@ -285,17 +279,9 @@ class _SocialImagesRow extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: socialImages[index],
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: AppColors.cE6E6E6,
-                    child: const Center(
-                      child: SizedBox(
-                        width: 15,
-                        height: 15,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1.5,
-                          color: AppColors.c1A1A1A,
-                        ),
-                      ),
+                  placeholder: (context, url) => Shimmer(
+                    child: Container(
+                      color: Colors.white,
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
@@ -312,8 +298,6 @@ class _SocialImagesRow extends StatelessWidget {
   }
 }
 
-
-
 class _NewArrivalSection extends StatelessWidget {
   const _NewArrivalSection();
 
@@ -323,52 +307,105 @@ class _NewArrivalSection extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeStateData>(
       buildWhen: (prev, curr) =>
+          prev.state != curr.state ||
           prev.newArrivalIndex != curr.newArrivalIndex ||
+          prev.newArrivalProducts != curr.newArrivalProducts ||
           prev.favoriteProductIds != curr.favoriteProductIds,
       builder: (context, state) {
+        if (state.state == HomeState.loading) {
+          return SizedBox(
+            height: 290.h,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 3,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 12.w),
+                  child: ShimmerLoadingCard(width: 165.w),
+                );
+              },
+            ),
+          );
+        }
+
+        if (state.state == HomeState.failure) {
+          return SizedBox(
+            height: 100.h,
+            child: Center(
+              child: Text(
+                state.errorMessage ?? "Failed to load products",
+                style: TextFontStyle.textStyle12C8A8A8APoppins400,
+              ),
+            ),
+          );
+        }
+
+        if (state.newArrivalProducts.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             NameAndButtom(
               name: "New Arrival",
-              onLeftTap: state.newArrivalIndex == 0 ? null : bloc.newArrivalPrev,
-              onRightTap: state.newArrivalIndex == HomeBloc.totalNewArrival - 1
-                  ? null
-                  : bloc.newArrivalNext,
+              onLeftTap:
+                  state.newArrivalIndex == 0 ? null : bloc.newArrivalPrev,
+              onRightTap:
+                  state.newArrivalIndex == state.newArrivalProducts.length - 1
+                      ? null
+                      : bloc.newArrivalNext,
             ),
             UIHelper.verticalSpace(8.h),
             SizedBox(
-              height: 300.h,
+              height: 290.h,
               child: PageView.builder(
                 controller: bloc.newArrivalController,
-                itemCount: HomeBloc.totalNewArrival,
+                itemCount: state.newArrivalProducts.length,
                 clipBehavior: Clip.none,
+                padEnds: false,
                 onPageChanged: bloc.onNewArrivalPageChanged,
                 itemBuilder: (BuildContext context, int index) {
-                  final int productId = index; // New Arrival: 0-5
+                  final product = state.newArrivalProducts[index];
+                  final String imageUrl = product.images.isNotEmpty
+                      ? product.images.first
+                      : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop';
 
                   return Padding(
                     padding: EdgeInsets.only(right: 12.w),
                     child: ProductCard(
                       width: 165.w,
-                      title: 'Regular Fit Slogan',
-                      priceText: r'$ 1,190',
+                      title: product.name,
+                      priceText: '\$ ${product.price}',
+                      discountText: (product.discount.isNotEmpty &&
+                              product.discount != "0")
+                          ? '-${product.discount}%'
+                          : null,
                       rating: 4.5,
-                      image:
-                          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop',
-                      isFavorite: state.favoriteProductIds.contains(productId),
-                      onTap: () {},
-                      onFavoriteTap: () => bloc.toggleFavorite(productId),
+                      image: imageUrl,
+                      isFavorite: state.favoriteProductIds.contains(product.id),
+                      onTap: () {
+                        NavigationService.navigateToWithObject(
+                            Routes.detailsScreen, product.id);
+                      },
+                      onFavoriteTap: () => bloc.toggleFavorite(product.id),
                       onCartTap: () {},
                     ),
                   );
                 },
               ),
             ),
-            UIHelper.verticalSpace(8.h),
-            CustomDotIndicator(
-              itemCount: HomeBloc.totalNewArrival,
-              currentIndex: state.newArrivalIndex,
+            if (state.newArrivalProducts.length > 1) ...[
+              UIHelper.verticalSpace(8.h),
+              CustomDotIndicator(
+                itemCount: state.newArrivalProducts.length - 1,
+                currentIndex: state.newArrivalIndex,
+              ),
+            ],
+            UIHelper.verticalSpace(20.h),
+            Center(
+              child: ViwAllWidgtes(ontab: () {}),
             ),
           ],
         );
@@ -388,53 +425,104 @@ class _BestSellingSection extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeStateData>(
       buildWhen: (prev, curr) =>
+          prev.state != curr.state ||
           prev.bestSellingIndex != curr.bestSellingIndex ||
+          prev.bestSellingProducts != curr.bestSellingProducts ||
           prev.favoriteProductIds != curr.favoriteProductIds,
       builder: (context, state) {
+        if (state.state == HomeState.loading) {
+          return SizedBox(
+            height: 290.h,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 3,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 12.w),
+                  child: ShimmerLoadingCard(width: 165.w),
+                );
+              },
+            ),
+          );
+        }
+
+        if (state.state == HomeState.failure) {
+          return SizedBox(
+            height: 100.h,
+            child: Center(
+              child: Text(
+                state.errorMessage ?? "Failed to load products",
+                style: TextFontStyle.textStyle12C8A8A8APoppins400,
+              ),
+            ),
+          );
+        }
+
+        if (state.bestSellingProducts.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             NameAndButtom(
               name: "Best Selling Products",
-              onLeftTap: state.bestSellingIndex == 0 ? null : bloc.bestSellingPrev,
-              onRightTap: state.bestSellingIndex == HomeBloc.totalBestSelling - 1
-                  ? null
-                  : bloc.bestSellingNext,
+              onLeftTap:
+                  state.bestSellingIndex == 0 ? null : bloc.bestSellingPrev,
+              onRightTap:
+                  state.bestSellingIndex == state.bestSellingProducts.length - 1
+                      ? null
+                      : bloc.bestSellingNext,
             ),
             UIHelper.verticalSpace(8.h),
             SizedBox(
-              height: 300.h,
+              height: 290.h,
               child: PageView.builder(
                 controller: bloc.bestSellingController,
-                itemCount: HomeBloc.totalBestSelling,
+                itemCount: state.bestSellingProducts.length,
                 clipBehavior: Clip.none,
+                padEnds: false,
                 onPageChanged: bloc.onBestSellingPageChanged,
                 itemBuilder: (BuildContext context, int index) {
-                  final int productId = 100 + index; // Best Selling: 100-105
+                  final product = state.bestSellingProducts[index];
+                  final String imageUrl = product.images.isNotEmpty
+                      ? product.images.first
+                      : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop';
 
                   return Padding(
                     padding: EdgeInsets.only(right: 12.w),
                     child: ProductCard(
                       width: 165.w,
-                      title: index % 2 == 0 ? 'Regular Fit Slogan' : 'Regular Fit Polo',
-                      priceText: index % 2 == 0 ? r'$ 1,190' : r'$ 1,100',
-                      discountText: index % 2 == 0 ? null : '-20%',
+                      title: product.name,
+                      priceText: '\$ ${product.price}',
+                      discountText: (product.discount.isNotEmpty &&
+                              product.discount != "0")
+                          ? '-${product.discount}%'
+                          : null,
                       rating: 4.5,
-                      image:
-                          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop',
-                      isFavorite: state.favoriteProductIds.contains(productId),
-                      onTap: () {},
-                      onFavoriteTap: () => bloc.toggleFavorite(productId),
+                      image: imageUrl,
+                      isFavorite: state.favoriteProductIds.contains(product.id),
+                      onTap: () {
+                        NavigationService.navigateToWithObject(
+                            Routes.detailsScreen, product.id);
+                      },
+                      onFavoriteTap: () => bloc.toggleFavorite(product.id),
                       onCartTap: () {},
                     ),
                   );
                 },
               ),
             ),
-            UIHelper.verticalSpace(8.h),
-            CustomDotIndicator(
-              itemCount: HomeBloc.totalBestSelling,
-              currentIndex: state.bestSellingIndex,
+            if (state.bestSellingProducts.length > 1) ...[
+              CustomDotIndicator(
+                itemCount: state.bestSellingProducts.length - 1,
+                currentIndex: state.bestSellingIndex,
+              ),
+            ],
+            UIHelper.verticalSpace(20.h),
+            Center(
+              child: ViwAllWidgtes(ontab: () {}),
             ),
           ],
         );
@@ -469,11 +557,12 @@ class _TopRatedSection extends StatelessWidget {
             ),
             UIHelper.verticalSpace(8.h),
             SizedBox(
-              height: 300.h,
+              height: 290.h,
               child: PageView.builder(
                 controller: bloc.topRatedController,
                 itemCount: HomeBloc.totalTopRated,
                 clipBehavior: Clip.none,
+                padEnds: false,
                 onPageChanged: bloc.onTopRatedPageChanged,
                 itemBuilder: (BuildContext context, int index) {
                   final int productId = 200 + index; // Top Rated: 200-205
@@ -482,15 +571,19 @@ class _TopRatedSection extends StatelessWidget {
                     padding: EdgeInsets.only(right: 12.w),
                     child: ProductCard(
                       width: 165.w,
-                      title: index % 2 == 0 ? 'Regular Fit Slogan' : 'Regular Fit Polo',
+                      title: index % 2 == 0
+                          ? 'Regular Fit Slogan'
+                          : 'Regular Fit Polo',
                       priceText: index % 2 == 0 ? r'$ 1,190' : r'$ 1,100',
                       discountText: index % 2 == 0 ? null : '-20%',
                       rating: 4.5,
                       image:
                           'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop',
-                      isFavorite: state.favoriteProductIds.contains(productId),
+                      isFavorite: state.favoriteProductIds
+                          .contains(productId.toString()),
                       onTap: () {},
-                      onFavoriteTap: () => bloc.toggleFavorite(productId),
+                      onFavoriteTap: () =>
+                          bloc.toggleFavorite(productId.toString()),
                       onCartTap: () {},
                     ),
                   );
@@ -537,51 +630,62 @@ class _DealsOfMonthSection extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: ListView.builder(
-              controller: bloc.dealsScrollController,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: 4,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final bool isFirst = index == 0;
-                final double width = isFirst ? 165.w : 135.w;
-                final double height = isFirst ? 230.h : 185.h;
+            child: BlocBuilder<HomeBloc, HomeStateData>(
+              buildWhen: (prev, curr) =>
+                  prev.dealsActiveIndex != curr.dealsActiveIndex,
+              builder: (context, state) {
+                return ClipRect(
+                  child: PageView.builder(
+                    controller: bloc.dealsScrollController,
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    clipBehavior: Clip.hardEdge,
+                    padEnds: false,
+                    itemCount: 4,
+                    onPageChanged: bloc.onDealsPageChanged,
+                    itemBuilder: (context, index) {
+                      final bool isActive = index == state.dealsActiveIndex;
+                      final bool isLeft = index < state.dealsActiveIndex;
+                      final double width = isActive ? 165.w : 135.w;
+                      final double height = isActive ? 230.h : 185.h;
 
-                return Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.only(right: 12.w),
-                  child: Container(
-                    width: width,
-                    height: height,
-                    decoration: BoxDecoration(
-                      color: dealsBgColors[index],
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4.r),
-                      child: CachedNetworkImage(
-                        imageUrl: dealsImages[index],
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          color: dealsBgColors[index],
-                          child: const Center(
-                            child: SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: AppColors.c1A1A1A,
+                      return AnimatedOpacity(
+                        duration: const Duration(milliseconds: 250),
+                        opacity: isLeft ? 0.0 : 1.0,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOut,
+                          alignment: Alignment.topCenter,
+                          margin: EdgeInsets.only(right: 12.w),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeOut,
+                            width: width,
+                            height: height,
+                          decoration: BoxDecoration(
+                            color: dealsBgColors[index],
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4.r),
+                            child: CachedNetworkImage(
+                              imageUrl: dealsImages[index],
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Shimmer(
+                                child: Container(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: dealsBgColors[index],
+                                child: const Icon(Icons.error, size: 24),
                               ),
                             ),
                           ),
                         ),
-                        errorWidget: (context, url, error) => Container(
-                          color: dealsBgColors[index],
-                          child: const Icon(Icons.error, size: 24),
-                        ),
                       ),
-                    ),
+                    );
+                  },
                   ),
                 );
               },
@@ -589,17 +693,18 @@ class _DealsOfMonthSection extends StatelessWidget {
           ),
           Positioned(
             bottom: 12.h,
-            left: 0,
-            right: 0,
-            child: Center(
+//left: 185.w,
+            right: 30.w,
+            child: SizedBox(
               child: BlocBuilder<HomeBloc, HomeStateData>(
                 buildWhen: (prev, curr) =>
                     prev.dealsActiveIndex != curr.dealsActiveIndex,
                 builder: (context, state) {
                   return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(4, (index) {
-                      final bool isActive = index == state.dealsActiveIndex;
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: List.generate(3, (index) {
+                      final bool isActive =
+                          index == state.dealsActiveIndex.clamp(0, 2);
 
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 6.w),
